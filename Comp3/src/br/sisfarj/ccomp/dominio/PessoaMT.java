@@ -21,4 +21,8 @@ public class PessoaMT {
 		throw new PessoaNaoEncontradaException("Matrícula não encontrada!");
 	}
 	
+	public enum TipoPessoa {
+		SECRETARIO, DIRETOR_TECNICO, TECNICO_ASSOSSIACAO, PESSOA
+	}
+	
 }
