@@ -23,7 +23,7 @@
 	<input type="text" name="matricula">
 	
 	<label for="senha">Senha</label>
-	<input type="senha" name="senha">
+	<input type="password" name="senha">
 	
 	<input type="submit" value="Login">
 </form>

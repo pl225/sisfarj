@@ -58,7 +58,7 @@ public class IdentificarUsuario extends HttpServlet {
 			PessoaMT pessoaMT = new PessoaMT(rs);
 			
 			request.getSession().setAttribute("matricula", pessoaMT.getMatricula(matricula));
-			request.getRequestDispatcher("Menu.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
 			
 		} catch (CampoObrigatorioException | PessoaNaoEncontradaException e) {
 			request.setAttribute(ERRO, e.getMessage());
