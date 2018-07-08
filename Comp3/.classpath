@@ -15,5 +15,12 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="lib/derby.jar"/>
+	<classpathentry kind="lib" path="lib/derbyclient.jar"/>
+	<classpathentry kind="lib" path="lib/derbyLocale_pt_BR.jar"/>
+	<classpathentry kind="lib" path="lib/derbynet.jar"/>
+	<classpathentry kind="lib" path="lib/derbyoptionaltools.jar"/>
+	<classpathentry kind="lib" path="lib/derbyrun.jar"/>
+	<classpathentry kind="lib" path="lib/derbytools.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
