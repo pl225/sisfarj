@@ -10,6 +10,7 @@
 
 	<ul>
   		<li><a href="FiliarAssociacao">1- Filiar associação</a></li>
+  		<li><a href="AlterarAssociacao">2- Alterar associação</a></li>
 	</ul>
 
 </body>
