@@ -101,3 +101,13 @@ ALTER TABLE Competicao ADD CONSTRAINT FK_Competicao_0 FOREIGN KEY (endereco) REF
 
 
 INSERT INTO COMP3.PESSOA values (780252, 'Pl2252122*', 'DIRETOR');
+
+ALTER TABLE comp3.localcompeticao
+DROP COLUMN piscina25;
+ALTER TABLE comp3.localcompeticao
+DROP COLUMN piscina50;
+
+ALTER TABLE comp3.localcompeticao
+ADD COLUMN piscina25 CHAR(1) NOT NULL DEFAULT 'F' CHECK (piscina25 IN ('T', 'F'));
+ALTER TABLE comp3.localcompeticao
+ADD COLUMN piscina50 CHAR(1) NOT NULL DEFAULT 'F' CHECK (piscina50 IN ('T', 'F'));
