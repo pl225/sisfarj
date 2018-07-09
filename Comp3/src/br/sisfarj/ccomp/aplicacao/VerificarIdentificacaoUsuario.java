@@ -2,7 +2,7 @@ package br.sisfarj.ccomp.aplicacao;
 
 import javax.servlet.http.HttpServletRequest;
 
-import br.sisfarj.ccomp.aplicacao.exception.UsuarioNaoIdentificadoException;
+import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
 
 public class VerificarIdentificacaoUsuario {
 	

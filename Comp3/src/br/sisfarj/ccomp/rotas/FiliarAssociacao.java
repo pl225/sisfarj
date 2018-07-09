@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
-import br.sisfarj.ccomp.aplicacao.exception.CampoObrigatorioException;
-import br.sisfarj.ccomp.aplicacao.exception.UsuarioNaoIdentificadoException;
+import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
+import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
 import br.sisfarj.ccomp.gateways.AssociacaoGateway;
 import br.sisfarj.ccomp.gateways.TecnicoAssociacaoGateway;
 

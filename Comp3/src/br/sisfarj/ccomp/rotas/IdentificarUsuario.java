@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.sisfarj.ccomp.aplicacao.exception.CampoObrigatorioException;
+import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.dominio.PessoaMT;
 import br.sisfarj.ccomp.gateways.PessoaGateway;
 import br.sisfarj.ccomp.gateways.exceptions.PessoaNaoEncontradaException;
