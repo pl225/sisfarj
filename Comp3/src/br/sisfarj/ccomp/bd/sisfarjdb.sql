@@ -30,7 +30,7 @@ ALTER TABLE Atleta ADD CONSTRAINT PK_Atleta PRIMARY KEY (matriculaAtleta);
 
 CREATE TABLE LocalCompeticao (
  endereco VARCHAR(300) NOT NULL,
- nome VARCHAR(10) NOT NULL,
+ nome VARCHAR(50) NOT NULL,
  piscina25 BOOLEAN NOT NULL,
  piscina50 BOOLEAN NOT NULL
 );
@@ -38,8 +38,8 @@ CREATE TABLE LocalCompeticao (
 ALTER TABLE LocalCompeticao ADD CONSTRAINT PK_LocalCompeticao PRIMARY KEY (endereco);
 
 CREATE TABLE Competicao (
- nome VARCHAR(10) NOT NULL,
- dataCompeticao VARCHAR(10) NOT NULL,
+ nome VARCHAR(50) NOT NULL,
+ dataCompeticao TIMESTAMP NOT NULL,
  endereco VARCHAR(300) NOT NULL
 );
 
@@ -49,7 +49,7 @@ ALTER TABLE Competicao ADD CONSTRAINT PK_Competicao PRIMARY KEY (dataCompeticao,
 CREATE TABLE Pessoa (
  matricula INT PRIMARY KEY,
  senha VARCHAR(15) NOT NULL,
- tipo VARCHAR(50) NOT NULL
+ tipo VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE TecnicoAssociacao (
@@ -59,18 +59,20 @@ CREATE TABLE TecnicoAssociacao (
 
 
 CREATE TABLE Prova (
- nomeProva VARCHAR(10) NOT NULL,
- classe VARCHAR(10) NOT NULL,
- categoria VARCHAR(10) NOT NULL
+ nomeProva VARCHAR(30) NOT NULL,
+ classe VARCHAR(30) NOT NULL,
+ categoria VARCHAR(30) NOT NULL
 );
 
 ALTER TABLE Prova ADD CONSTRAINT PK_Prova PRIMARY KEY (nomeProva,classe,categoria);
 
 CREATE TABLE AtletaProva (
  matriculaAtleta INT NOT NULL,
- nomeProva VARCHAR(10) NOT NULL,
- classe VARCHAR(10) NOT NULL,
- categoria VARCHAR(10) NOT NULL
+ nomeProva VARCHAR(30) NOT NULL,
+ classe VARCHAR(30) NOT NULL,
+ categoria VARCHAR(30) NOT NULL,
+ tempo TIME,
+ pontuacao INT
 );
 
 ALTER TABLE AtletaProva ADD CONSTRAINT PK_AtletaProva PRIMARY KEY (nomeProva,classe,categoria,matriculaAtleta);
@@ -79,10 +81,10 @@ ALTER TABLE AtletaProva ADD CONSTRAINT FK_AtletaProvaProva FOREIGN KEY (nomeProv
 
 
 CREATE TABLE CompeticaoProva (
- nomeProva VARCHAR(10) NOT NULL,
- classe VARCHAR(10) NOT NULL,
- categoria VARCHAR(10) NOT NULL,
- dataCompeticao VARCHAR(10) NOT NULL,
+ nomeProva VARCHAR(30) NOT NULL,
+ classe VARCHAR(30) NOT NULL,
+ categoria VARCHAR(30) NOT NULL,
+ dataCompeticao TIMESTAMP NOT NULL,
  endereco VARCHAR(300) NOT NULL
 );
 
