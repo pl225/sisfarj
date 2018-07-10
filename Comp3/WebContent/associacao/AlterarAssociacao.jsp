@@ -5,16 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Alterar associação</title>
-
-	<style>
-		table, th, td {
-		    border: 1px solid black;
-		}
-		table {
-			width: 50%;
-		}
-	</style>
-
+	<link rel="stylesheet" type="text/css" href="css/tabela.css">
 </head>
 <body>
 

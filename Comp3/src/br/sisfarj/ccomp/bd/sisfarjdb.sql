@@ -2,7 +2,7 @@ CREATE SCHEMA comp3;
 SET SCHEMA comp3;
 --
 CREATE TABLE Associacao (
- matriculaAssociacao INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+ matriculaAssociacao INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1000000, INCREMENT BY 1),
  nome VARCHAR(50) NOT NULL,
  telefone VARCHAR(20) NOT NULL,
  sigla VARCHAR(5) NOT NULL,
@@ -11,9 +11,6 @@ CREATE TABLE Associacao (
  numeroOficio INT NOT NULL,
  dataOficio TIMESTAMP NOT NULL
 );
-
-ALTER TABLE Associacao ADD CONSTRAINT PK_Associacao PRIMARY KEY (matriculaAssociacao);
-
 
 CREATE TABLE Atleta (
  matriculaAtleta INT NOT NULL,

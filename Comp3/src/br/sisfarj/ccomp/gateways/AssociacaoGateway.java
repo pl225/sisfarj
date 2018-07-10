@@ -24,12 +24,12 @@ public class AssociacaoGateway {
 		
 		Timestamp t = new Timestamp(simpleDateFormat.parse(dataOficio).getTime());
 		
-		int linhasAfetadas = bdConnection.execute(new UpdatingQuery("INSERT INTO comp3.associacao "
-				+ "VALUES (" + numeroOficio + ", '" + nome + "', '" + telefone + "', '" + sigla + "', '"
-						+ endereco + "', " + numeroPagamento + ", " + numeroOficio + ", '" + t + "')"));
+		int matriculaGerada = bdConnection.execute(new UpdatingQuery("INSERT INTO comp3.associacao (nome, telefone, sigla, endereco, numeroPagamento, numeroOficio, dataOficio) "
+				+ "VALUES ('" + nome + "', '" + telefone + "', '" + sigla + "', '"
+						+ endereco + "', " + numeroPagamento + ", " + numeroOficio + ", '" + t + "')"), 
+				"MATRICULAASSOCIACAO");
 		
-		if (linhasAfetadas <= 0) throw new SQLException();
-		return Integer.parseInt(numeroOficio);
+		return matriculaGerada;
 		
 	}
 
