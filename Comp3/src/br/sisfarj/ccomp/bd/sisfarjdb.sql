@@ -110,3 +110,5 @@ ALTER TABLE comp3.localcompeticao
 ADD COLUMN piscina25 CHAR(1) NOT NULL DEFAULT 'F' CHECK (piscina25 IN ('T', 'F'));
 ALTER TABLE comp3.localcompeticao
 ADD COLUMN piscina50 CHAR(1) NOT NULL DEFAULT 'F' CHECK (piscina50 IN ('T', 'F'));
+
+insert into comp3.localcompeticao values ('Barra', 'BarraPool', 'T', 'T'), ('Piedade', 'PiedadePool', 'F', 'F');

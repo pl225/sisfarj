@@ -5,11 +5,12 @@ import java.sql.SQLException;
 
 import br.sisfarj.ccomp.bd.BDConnection;
 import br.sisfarj.ccomp.bd.ConsultingQuery;
+import br.sisfarj.ccomp.gateways.exceptions.LocalNaoEncontradoException;
 import br.sisfarj.ccomp.gateways.exceptions.PessoaNaoEncontradaException;
 
 public class LocalCompeticaoGateway {
 
-	public ResultSet listarTudo() throws SQLException {
+	public ResultSet listarTudo() throws SQLException, LocalNaoEncontradoException {
 		
 		BDConnection bdConnection = new BDConnection(false);
 		

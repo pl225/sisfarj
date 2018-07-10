@@ -2,6 +2,7 @@ package br.sisfarj.ccomp.rotas;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
 import br.sisfarj.ccomp.gateways.LocalCompeticaoGateway;
+import br.sisfarj.ccomp.gateways.exceptions.LocalNaoEncontradoException;
 
 /**
  * Servlet implementation class ListarLocaisDeCompeticao
@@ -38,11 +40,17 @@ public class ListarLocaisDeCompeticao extends HttpServlet {
 			
 			LocalCompeticaoGateway localCompeticaoGateway = new LocalCompeticaoGateway();
 			ResultSet rs = localCompeticaoGateway.listarTudo();
+			request.setAttribute("dados", rs);
 			
-			request.getRequestDispatcher("associacao/FiliarAssociacao.jsp").forward(request, response);
+			request.getRequestDispatcher("localCompeticao/ListarLocalCompeticao.jsp").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
 			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+		} catch (SQLException e) {
+			response.getWriter().println(e.getMessage());
+		} catch (LocalNaoEncontradoException e) {
+			request.setAttribute(Constantes.ERRO, e.getMessage());
+			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
 		}
 	}
 
