@@ -12,6 +12,7 @@
   		<li><a href="FiliarAssociacao">1- Filiar associação</a></li>
   		<li><a href="AlterarAssociacao">2- Alterar associação</a></li>
   		<li><a href="ListarLocaisDeCompeticao">3- Listar locais de competição</a></li>
+		<li><a href="ListarAssociacao">4- Listar Associações</a></li>
 	</ul>
 
 </body>

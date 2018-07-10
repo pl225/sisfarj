@@ -64,7 +64,18 @@ public class AssociacaoGateway {
 		return rs;
 		
 	}
-
+	
+	public ResultSet listarPorNome() throws SQLException, NaoHaAssociacaoException {
+		
+		BDConnection bdConnection = new BDConnection(false);
+				
+		ResultSet rs = bdConnection.execute(new ConsultingQuery("SELECT matriculaAssociacao, nome FROM comp3.associacao ORDER BY nome"));
+		
+		if (!rs.next()) throw new NaoHaAssociacaoException();
+		rs.beforeFirst();
+		return rs;
+	}
+	
 	public void atualizar(String matriculaAssociacao, String numeroOficio, String dataOficio, 
 			String nome, String sigla) throws SQLException, ParseException {
 		
