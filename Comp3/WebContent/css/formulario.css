@@ -1,0 +1,8 @@
+@charset "ISO-8859-1";
+
+fieldset
+{
+  background-color:#FFF;
+  max-width:500px;
+  padding:16px;	
+}
