@@ -8,6 +8,8 @@
 </head>
 <body>
 
+	<jsp:include page="/WEB-INF/Erro.jsp"></jsp:include>
+
 	<ul>
   		<li><a href="FiliarAssociacao">1- Filiar Associação</a></li>
   		<li><a href="AlterarAssociacao">2- Alterar Associação</a></li>
