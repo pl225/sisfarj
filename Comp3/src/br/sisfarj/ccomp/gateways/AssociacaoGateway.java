@@ -15,8 +15,8 @@ import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
 
 public class AssociacaoGateway {
 
-	public int inserir(String numeroOficio, String dataOficio, String nome, String sigla, String endereco,
-			String telefone, String numeroPagamento) throws SQLException, ParseException {
+	public void inserir(int matricula, String numeroOficio, String dataOficio, String nome, String sigla, 
+			String endereco, String telefone, String numeroPagamento) throws SQLException, ParseException {
 		
 		BDConnection bdConnection = new BDConnection(false);
 		
@@ -24,12 +24,12 @@ public class AssociacaoGateway {
 		
 		Timestamp t = new Timestamp(simpleDateFormat.parse(dataOficio).getTime());
 		
-		int matriculaGerada = bdConnection.execute(new UpdatingQuery("INSERT INTO comp3.associacao (nome, telefone, sigla, endereco, numeroPagamento, numeroOficio, dataOficio) "
-				+ "VALUES ('" + nome + "', '" + telefone + "', '" + sigla + "', '"
-						+ endereco + "', " + numeroPagamento + ", " + numeroOficio + ", '" + t + "')"), 
-				"MATRICULAASSOCIACAO");
+		int linhasAfetadas = bdConnection.execute(new UpdatingQuery("INSERT INTO comp3.associacao "
+				+ "(matriculaAssociacao, nome, telefone, sigla, endereco, numeroPagamento, numeroOficio, dataOficio, temAcesso) "
+				+ "VALUES (" + matricula + ", '" + nome + "', '" + telefone + "', '" + sigla + "', '"
+						+ endereco + "', " + numeroPagamento + ", " + numeroOficio + ", '" + t + "', 'T')"));
 		
-		return matriculaGerada;
+		if (linhasAfetadas <= 0) throw new SQLException();
 		
 	}
 

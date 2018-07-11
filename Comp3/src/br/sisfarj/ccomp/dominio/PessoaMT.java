@@ -1,5 +1,6 @@
 package br.sisfarj.ccomp.dominio;
 
+import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -23,6 +24,16 @@ public class PessoaMT {
 	
 	public enum TipoPessoa {
 		SECRETARIO, DIRETOR_TECNICO, TECNICO_ASSOSSIACAO, PESSOA
+	}
+	
+	public static String gerarSenha() {
+		final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		SecureRandom rnd = new SecureRandom();
+
+		StringBuilder sb = new StringBuilder(10);
+		for( int i = 0; i < 10; i++ ) 
+			sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+		return sb.toString();
 	}
 	
 }

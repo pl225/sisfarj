@@ -15,8 +15,10 @@ import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
+import br.sisfarj.ccomp.dominio.PessoaMT;
+import br.sisfarj.ccomp.dominio.PessoaMT.TipoPessoa;
 import br.sisfarj.ccomp.gateways.AssociacaoGateway;
-import br.sisfarj.ccomp.gateways.TecnicoAssociacaoGateway;
+import br.sisfarj.ccomp.gateways.PessoaGateway;
 
 /**
  * Servlet implementation class FiliarAssociacao
@@ -55,17 +57,17 @@ public class FiliarAssociacao extends HttpServlet {
 			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
 			validarLancamentoInformacoes(request);
 			
+			
+			PessoaGateway pessoaGateway = new PessoaGateway();
+			int matriculaGerada  = pessoaGateway.inserir(PessoaMT.gerarSenha(), TipoPessoa.TECNICO_ASSOSSIACAO);
 			AssociacaoGateway associacaoGateway = new AssociacaoGateway();
-			int matriculaGerada = associacaoGateway.inserir(request.getParameter("numeroOficio"), 
+			associacaoGateway.inserir(matriculaGerada, request.getParameter("numeroOficio"), 
 					request.getParameter("dataOficio"), 
 					request.getParameter("nome"),
 					request.getParameter("sigla"),
 					request.getParameter("endereco"),
 					request.getParameter("telefone"),
 					request.getParameter("numeroComprovantePagamento"));
-			
-			TecnicoAssociacaoGateway tecnicoAssociacaoGateway = new TecnicoAssociacaoGateway();
-			tecnicoAssociacaoGateway.inserir(matriculaGerada);
 			
 			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {

@@ -25,13 +25,13 @@ public class PessoaGateway {
 		return rs;
 	}
 
-	public void inserir(int matriculaGerada, String senha, TipoPessoa tipoPessoa) throws SQLException {
+	public int inserir(String senha, TipoPessoa tipoPessoa) throws SQLException {
 		BDConnection bdConnection = new BDConnection(false);
 		
-		int linhasAfetadas = bdConnection.execute(new UpdatingQuery("INSERT INTO comp3.pessoa "
-				+ "VALUES (" + matriculaGerada + ", '" + senha + "', '" + tipoPessoa.toString() + "')"));
+		int matriculaGerada = bdConnection.execute(new UpdatingQuery("INSERT INTO comp3.pessoa (senha, tipo) "
+				+ "VALUES ('" + senha + "', '" + tipoPessoa.toString() + "')"), "MATRICULA");
 		
-		if (linhasAfetadas <= 0) throw new SQLException();
+		return matriculaGerada;
 		
 	}
 
