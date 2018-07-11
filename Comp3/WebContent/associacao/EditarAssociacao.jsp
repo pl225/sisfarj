@@ -39,6 +39,11 @@
 		
 		<br/><br/>
 		
+		<label for="sigla">Liberar acesso</label>
+		<input type="checkbox" name="acesso" <%= rs.getString("temAcesso").equals("T") ? "checked=\"true\"" : "" %>>
+		
+		<br/><br/>
+		
 		<input type="submit" value="Enviar">
 		
 	</form>

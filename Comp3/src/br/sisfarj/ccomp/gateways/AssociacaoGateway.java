@@ -54,7 +54,8 @@ public class AssociacaoGateway {
 						+ "nome, "
 						+ "sigla, "
 						+ "numeroOficio, "
-						+ "dataOficio "
+						+ "dataOficio,"
+						+ "temAcesso "
 						+ "FROM comp3.associacao "
 						+ "WHERE matriculaAssociacao = " + matriculaAssociacao)
 		);
@@ -77,7 +78,7 @@ public class AssociacaoGateway {
 	}
 	
 	public void atualizar(String matriculaAssociacao, String numeroOficio, String dataOficio, 
-			String nome, String sigla) throws SQLException, ParseException {
+			String nome, String sigla, char temAcesso) throws SQLException, ParseException {
 		
 		BDConnection bdConnection = new BDConnection(false);
 		
@@ -87,7 +88,8 @@ public class AssociacaoGateway {
 		
 		int linhasAfetadas = bdConnection.execute(new UpdatingQuery("UPDATE comp3.associacao SET "
 				+ "numeroOficio = " + numeroOficio + ", nome = '" + nome +	"', "
-				+ "dataOficio = '" + t + "', sigla = '" + sigla + "' "
+				+ "dataOficio = '" + t + "', sigla = '" + sigla + "', "
+				+ "temAcesso = '" + temAcesso + "' "
 				+ "WHERE matriculaAssociacao = " + matriculaAssociacao));
 		
 		if (linhasAfetadas <= 0) throw new SQLException();

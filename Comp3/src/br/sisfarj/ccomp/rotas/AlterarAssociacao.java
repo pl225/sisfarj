@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.sisfarj.ccomp.aplicacao.Constantes;
+import br.sisfarj.ccomp.aplicacao.ConstantesPiscina;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
@@ -79,7 +80,9 @@ public class AlterarAssociacao extends HttpServlet {
 				request.getParameter("numeroOficio"), 
 				request.getParameter("dataOficio"), 
 				request.getParameter("nome"),
-				request.getParameter("sigla")	
+				request.getParameter("sigla"),
+				request.getParameter("acesso") != null ? 
+						ConstantesPiscina.TRUE.getValor() : ConstantesPiscina.FALSE.getValor() 
 			);
 			
 			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
