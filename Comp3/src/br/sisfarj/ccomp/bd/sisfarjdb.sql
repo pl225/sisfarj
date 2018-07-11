@@ -13,7 +13,7 @@ CREATE TABLE Associacao (
 );
 
 CREATE TABLE Atleta (
- matriculaAtleta INT NOT NULL,
+ matriculaAtleta INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1000000, INCREMENT BY 1),
  numeroOficio INT NOT NULL,
  dataOficio TIMESTAMP NOT NULL,
  nome VARCHAR(50) NOT NULL,
@@ -22,8 +22,6 @@ CREATE TABLE Atleta (
  matriculaAssociacao INT NOT NULL,
  dataEntrada TIMESTAMP NOT NULL
 );
-
-ALTER TABLE Atleta ADD CONSTRAINT PK_Atleta PRIMARY KEY (matriculaAtleta);
 
 CREATE TABLE LocalCompeticao (
  endereco VARCHAR(300) NOT NULL,
