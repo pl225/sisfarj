@@ -12,7 +12,7 @@ import br.sisfarj.ccomp.bd.ConsultingQuery;
 import br.sisfarj.ccomp.bd.UpdatingQuery;
 import br.sisfarj.ccomp.gateways.exceptions.LocalNaoEncontradoException;
 import br.sisfarj.ccomp.gateways.exceptions.PessoaNaoEncontradaException;
-
+//
 public class LocalCompeticaoGateway {
 	
 	public void inserir(String nome, String endereco, char piscina25, char piscina50) throws SQLException {

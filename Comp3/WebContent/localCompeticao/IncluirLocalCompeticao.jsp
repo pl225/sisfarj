@@ -19,7 +19,7 @@
 	
 	<div id="formulario">
 	
-		<h2>Insira os dados do Local de Competição</h2>
+		<h2>Insira os Dados do Local de Competição</h2>
 	
 		<form action="IncluirLocalCompeticao" method="post">
 			

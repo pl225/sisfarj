@@ -1,5 +1,5 @@
 package br.sisfarj.ccomp.aplicacao;
-
+//
 public enum ConstantesPiscina {
 	
 	TRUE('T'), FALSE('F');

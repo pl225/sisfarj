@@ -45,7 +45,7 @@ public class IncluirLocalCompeticao extends HttpServlet {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
 			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
 		}
-	}
+	}//
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
