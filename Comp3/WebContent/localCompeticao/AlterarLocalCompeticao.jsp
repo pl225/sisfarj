@@ -24,6 +24,7 @@
 				<th>Endereço</th>
 				<th>Piscina 25m</th>
 				<th>Piscina 50m</th>
+				<th>Ações</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -37,6 +38,8 @@
 				<td><%= rs.getString("endereco") %></td>
 				<td><%= rs.getString("piscina25") %></td>
 				<td><%= rs.getString("piscina50") %></td>
+				<td><a href="AlterarLocalCompeticao?endereco=
+				<%= rs.getString("endereco") %>">Alterar</a></td>
 			</tr>
 			
 			
