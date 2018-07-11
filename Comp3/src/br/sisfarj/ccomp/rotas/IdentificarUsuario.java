@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
+import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
 import br.sisfarj.ccomp.dominio.PessoaMT;
 import br.sisfarj.ccomp.gateways.PessoaGateway;
 import br.sisfarj.ccomp.gateways.exceptions.PessoaNaoEncontradaException;
@@ -35,8 +37,14 @@ public class IdentificarUsuario extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getSession().invalidate();
-		request.getRequestDispatcher("IdentificarUsuario.jsp").forward(request, response);
+		
+		try {
+			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
+			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+		} catch (UsuarioNaoIdentificadoException e) {
+			request.getSession().invalidate();
+			request.getRequestDispatcher("IdentificarUsuario.jsp").forward(request, response);
+		}
 	}
 
 	/**
@@ -60,11 +68,9 @@ public class IdentificarUsuario extends HttpServlet {
 			request.getSession().setAttribute("matricula", pessoaMT.getMatricula(matricula));
 			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
 			
-		} catch (CampoObrigatorioException | PessoaNaoEncontradaException e) {
+		} catch (CampoObrigatorioException | PessoaNaoEncontradaException | SQLException e) {
 			request.setAttribute(ERRO, e.getMessage());
 			doGet(request, response);
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
 		}
 		
 	}
