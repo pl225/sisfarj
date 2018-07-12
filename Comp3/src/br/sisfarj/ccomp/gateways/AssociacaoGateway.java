@@ -15,8 +15,9 @@ import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
 
 public class AssociacaoGateway {
 
-	public void inserir(int matricula, String numeroOficio, String dataOficio, String nome, String sigla, 
-			String endereco, String telefone, String numeroPagamento) throws SQLException, ParseException {
+	public void inserir(String numeroOficio, String dataOficio, String nome, 
+			String sigla, String endereco, String telefone, 
+			String numeroPagamento, String senha) throws SQLException, ParseException {
 		
 		BDConnection bdConnection = new BDConnection(false);
 		
@@ -25,9 +26,9 @@ public class AssociacaoGateway {
 		Timestamp t = new Timestamp(simpleDateFormat.parse(dataOficio).getTime());
 		
 		int linhasAfetadas = bdConnection.execute(new UpdatingQuery("INSERT INTO comp3.associacao "
-				+ "(matriculaAssociacao, nome, telefone, sigla, endereco, numeroPagamento, numeroOficio, dataOficio, temAcesso) "
-				+ "VALUES (" + matricula + ", '" + nome + "', '" + telefone + "', '" + sigla + "', '"
-						+ endereco + "', " + numeroPagamento + ", " + numeroOficio + ", '" + t + "', 'T')"));
+				+ "(nome, telefone, sigla, endereco, numeroPagamento, numeroOficio, dataOficio, temAcesso, senha) "
+				+ "VALUES ('" + nome + "', '" + telefone + "', '" + sigla + "', '"
+						+ endereco + "', " + numeroPagamento + ", " + numeroOficio + ", '" + t + "', 'T', '" + senha + "')"));
 		
 		if (linhasAfetadas <= 0) throw new SQLException();
 		
@@ -94,6 +95,23 @@ public class AssociacaoGateway {
 		
 		if (linhasAfetadas <= 0) throw new SQLException();
 		
+	}
+
+	public ResultSet buscar(int matricula, String senha) throws SQLException, AssociacaoNaoEncontradaException {
+		BDConnection bdConnection = new BDConnection(false);
+		
+		ResultSet rs = bdConnection.execute(
+				new ConsultingQuery("SELECT "
+						+ "matriculaAssociacao, temAcesso  "
+						+ "FROM comp3.associacao "
+						+ "WHERE matriculaAssociacao = " + matricula + " AND "
+								+ "senha = '" + senha + "' "
+								+ "AND temAcesso = 'T'")
+		);
+		
+		if (!rs.next()) throw new AssociacaoNaoEncontradaException(String.valueOf(matricula));
+		rs.beforeFirst();
+		return rs;
 	}
 
 }
