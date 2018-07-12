@@ -1,0 +1,63 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="css/tabela.css">
+<title>Listar Competição</title>
+</head>
+<body>
+	<%@ page import = "java.sql.ResultSet" %>
+
+	<%
+		ResultSet rsProvas = (ResultSet) request.getAttribute("dados");
+		rsProvas.next();
+		rsProvas.beforeFirst();
+		ResultSet rsCompeticao = (ResultSet) request.getAttribute("dadosCompeticao");
+		rsCompeticao.next();
+		
+	%>
+
+	<h2>Provas da Competição <%= rsCompeticao.getString("nome") %></h2>
+		<br/><br/>
+		
+		Tipo de Piscina: <%= rsCompeticao.getString("tipoPiscina") %>
+		
+		<table>
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>Categoria</th>
+				<th>Classe</th>
+				<th>Ações</th>
+			</tr>
+		</thead>
+		<tbody>
+		
+			<%
+				while (rsProvas.next()) {
+			%>
+			
+			<tr>
+				<td><%= rsProvas.getString("nomeProva") %></td>
+				<td><%= rsProvas.getString("categoria") %></td>
+				<td><%= rsProvas.getString("classe") %></td>
+				<td><a href="ListarCompeticao?nome=<%= rsProvas.getString("nomeProva") %>
+				&endereco=<%=rsCompeticao.getString("endereco")%>&classe=<%=rsProvas.getString("classe")%>&categoria=<%=rsProvas.getString("categoria")%>&dataCompeticao=<%=rsCompeticao.getString("dataCompeticao")%>">Selecionar</a></td>
+			</tr>
+			
+			
+			<%
+				}
+			%>
+		
+		</tbody>
+	</table>
+		
+		<br/><br/>
+		
+		
+	</form>
+</body>
+</html>
