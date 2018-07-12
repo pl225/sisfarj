@@ -17,6 +17,7 @@ import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAssociacaoException;
+import br.sisfarj.ccomp.dominio.exceptions.NaoHaAtletaException;
 import br.sisfarj.ccomp.gateways.AssociacaoGateway;
 import br.sisfarj.ccomp.gateways.AtletaGateway;
 import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
@@ -64,7 +65,7 @@ public class TransferirAtleta extends HttpServlet {
 			System.out.println("N aguento mais");
 			response.getWriter().println(e.getMessage());
 			
-		} catch (AtletaNaoEncontradoException e) {
+		} catch (AtletaNaoEncontradoException | NaoHaAtletaException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
 		}
@@ -82,7 +83,7 @@ public class TransferirAtleta extends HttpServlet {
 			
 			AtletaGateway atletaGateway = new AtletaGateway();
 			
-			atletaGateway.atualizar(request.getParameter("matriculaAtleta"), 
+			atletaGateway.transferirAtleta(request.getParameter("matriculaAtleta"), 
 					request.getParameter("associacao"),
 					request.getParameter("numero"),
 					request.getParameter("oficio"),
@@ -100,7 +101,7 @@ public class TransferirAtleta extends HttpServlet {
 			response.getWriter().println(e.getMessage());
 		} catch (AssociacaoNaoEncontradaException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			doGet(request, response);
 		}
 	}
 	

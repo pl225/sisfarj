@@ -82,4 +82,29 @@ public class AtletaGateway {
 		if (linhasAfetadas <= 0) throw new SQLException();
 		
 	}
+	
+	public void transferirAtleta(String matriculaAtleta, String matriculaAssociacao, String numeroOficio, String dataOficio, 
+			String numeroComprovante, String dataEntrada) throws SQLException, ParseException, AssociacaoNaoEncontradaException {
+		
+		BDConnection bdConnection = new BDConnection(false);
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
+		
+		Timestamp t1 = new Timestamp(simpleDateFormat.parse(dataOficio).getTime());
+		Timestamp t2 = new Timestamp(simpleDateFormat.parse(dataEntrada).getTime());
+		
+		AssociacaoGateway ag = new AssociacaoGateway();
+		ag.buscar(matriculaAssociacao);
+		
+		int linhasAfetadas = bdConnection.execute(new UpdatingQuery("UPDATE comp3.atleta SET "
+				+ "numeroOficio = " + numeroOficio + ", matriculaAssociacao = " + matriculaAssociacao + ", "
+				+ "dataOficio = '" + t1 + "', numeroPagamento = " + numeroComprovante + ", "
+				+ "dataEntrada = '" + t2 + "' "
+				+ "WHERE matriculaAtleta = " + matriculaAtleta));
+		
+		if (linhasAfetadas <= 0) throw new SQLException();
+		
+	}
+	
+	
 }
