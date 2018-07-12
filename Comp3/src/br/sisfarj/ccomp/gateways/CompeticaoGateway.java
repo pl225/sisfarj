@@ -55,4 +55,27 @@ public class CompeticaoGateway {
 		
 	}
 
+	public void inserir(String nomeCompeticao, String dataCompeticao, String endereco, 
+			String tipoPiscina, String[] nomesProva,
+			String[] classes, String[] categorias) throws SQLException, ParseException {
+		
+		BDConnection bdConnection = new BDConnection(false);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
+		Timestamp timestampCompeticao = new Timestamp(simpleDateFormat.parse(dataCompeticao).getTime());
+		
+		int linhasAfetadas = bdConnection.execute(new UpdatingQuery("INSERT INTO comp3.competicao "
+				+ "VALUES ('" + nomeCompeticao + "', '" + timestampCompeticao + "', "
+				+ "'" + endereco + "', '" + tipoPiscina + "')"));
+		
+		if (linhasAfetadas <= 0) throw new SQLException();
+		
+		ProvaGateway provaGateway = new ProvaGateway();
+		
+		for (String nomeProva : nomesProva)
+			for (String classe : classes)
+				for (String categoria : categorias)
+					provaGateway.inserir(dataCompeticao, endereco, nomeProva, classe, categoria);
+		
+	}
+
 }

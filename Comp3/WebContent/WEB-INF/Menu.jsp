@@ -18,6 +18,7 @@
 		<li><a href="IncluirLocalCompeticao">10- Incluir Local de Competição</a></li>
 		<li><a href="AlterarLocalCompeticao">11- Alterar Local de Competição</a></li>
 		<li><a href="ListarAssociacao">12- Listar Associações</a></li>
+		<li><a href="CriarCompeticao">13- Criar Competição</a></li>
 		<li><a href="AlterarCompeticao">14- Alterar Competição</a></li>
 	</ul>
 
