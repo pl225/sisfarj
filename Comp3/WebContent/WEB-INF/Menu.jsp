@@ -15,6 +15,7 @@
   		<li><a href="AlterarAssociacao">2- Alterar Associação</a></li>
   		<li><a href="ListarLocaisDeCompeticao">3- Listar Locais de Competição</a></li>
 		<li><a href="CadastrarAtleta">4- Cadastrar Atleta</a></li>
+		<li><a href="AlterarAtleta">5- Alterar Atleta</a></li>
 		<li><a href="IncluirLocalCompeticao">10- Incluir Local de Competição</a></li>
 		<li><a href="AlterarLocalCompeticao">11- Alterar Local de Competição</a></li>
 		<li><a href="ListarAssociacao">12- Listar Associações</a></li>
