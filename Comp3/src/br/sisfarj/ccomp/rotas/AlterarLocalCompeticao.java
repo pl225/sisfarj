@@ -58,12 +58,9 @@ public class AlterarLocalCompeticao extends HttpServlet {
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
 			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
-		} catch (SQLException e) {
+		} catch (SQLException | LocalNaoEncontradoException e) {
 			response.getWriter().println(e.getMessage());
 			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
-			e.printStackTrace();
-		} catch (LocalNaoEncontradoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		}

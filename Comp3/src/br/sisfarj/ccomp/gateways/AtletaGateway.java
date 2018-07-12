@@ -14,11 +14,12 @@ import br.sisfarj.ccomp.bd.UpdatingQuery;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAtletaException;
 import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
 import br.sisfarj.ccomp.gateways.exceptions.AtletaNaoEncontradoException;
+import br.sisfarj.ccomp.gateways.exceptions.LocalNaoEncontradoException;
 
 
 public class AtletaGateway {
 	public void inserir(String numero, String oficio, String nome, String nascimento, String entrada,
-			String associacao, String comprovante) throws SQLException, ParseException, AssociacaoNaoEncontradaException {
+		String associacao, String comprovante) throws SQLException, ParseException, AssociacaoNaoEncontradaException {
 		
 		BDConnection bdConnection = new BDConnection(false);
 		
@@ -37,7 +38,7 @@ public class AtletaGateway {
 	}
 	
 	
-	public ResultSet listarTodas() throws SQLException, NaoHaAtletaException {
+	public ResultSet listarTodos() throws SQLException, NaoHaAtletaException {
 		
 		BDConnection bdConnection = new BDConnection(false);
 				
@@ -63,7 +64,7 @@ public class AtletaGateway {
 	}
 	
 	
-	public void atualizar(String matriculaAtleta, String nome, String entrada, String numero, 
+	public void atualizar(String matriculaAtleta, String matriculaAssociacao, String nome, String entrada, String numero, 
 			String oficio) throws SQLException, ParseException {
 		
 		BDConnection bdConnection = new BDConnection(false);
@@ -74,7 +75,7 @@ public class AtletaGateway {
 		Timestamp t2 = new Timestamp(simpleDateFormat.parse(entrada).getTime());
 		
 		int linhasAfetadas = bdConnection.execute(new UpdatingQuery("UPDATE comp3.atleta SET "
-				+ "numeroOficio = " + numero + ", dataOficio = '" + t1 +  "', nome = '" + nome +	"', " 
+				+ "matriculaAssociacao = " + matriculaAssociacao + " numeroOficio = " + numero + ", dataOficio = '" + t1 +  "', nome = '" + nome +	"', " 
 				+ "dataEntrada = '" + t2 + "' " 
 				+ "WHERE matriculaAtleta = " + matriculaAtleta));
 		
