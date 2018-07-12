@@ -10,10 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
-import br.sisfarj.ccomp.dominio.PessoaMT;
-import br.sisfarj.ccomp.gateways.PessoaGateway;
-import br.sisfarj.ccomp.gateways.exceptions.PessoaNaoEncontradaException;
+import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
+import br.sisfarj.ccomp.dominio.AssociacaoMT;
+import br.sisfarj.ccomp.gateways.AssociacaoGateway;
+import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
 
 /**
  * Servlet implementation class IdentificarUsuario
@@ -35,8 +37,13 @@ public class IdentificarUsuario extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getSession().invalidate();
-		request.getRequestDispatcher("IdentificarUsuario.jsp").forward(request, response);
+		try {
+			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
+			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+		} catch (UsuarioNaoIdentificadoException e) {
+			request.getSession().invalidate();
+			request.getRequestDispatcher("IdentificarUsuario.jsp").forward(request, response);
+		}
 	}
 
 	/**
@@ -54,13 +61,17 @@ public class IdentificarUsuario extends HttpServlet {
 			String senha = request.getParameter("senha");
 			if ("".equals(senha)) throw new CampoObrigatorioException("O campo senha é de preenchimento obrigatório");
 			
-			ResultSet rs = new PessoaGateway().buscar(matricula, senha);
-			PessoaMT pessoaMT = new PessoaMT(rs);
+			ResultSet rs = new AssociacaoGateway().buscar(matricula, senha);
+			AssociacaoMT associacaoMT = new AssociacaoMT(rs);
 			
-			request.getSession().setAttribute("matricula", pessoaMT.getMatricula(matricula));
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			if (associacaoMT.temAcesso(matricula)) {
+				request.getSession().setAttribute("matricula", associacaoMT.getMatricula(matricula));
+				request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			} else {
+				doGet(request, response);
+			}
 			
-		} catch (CampoObrigatorioException | PessoaNaoEncontradaException e) {
+		} catch (CampoObrigatorioException | AssociacaoNaoEncontradaException e) {
 			request.setAttribute(ERRO, e.getMessage());
 			doGet(request, response);
 		} catch (SQLException e) {
