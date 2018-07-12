@@ -10,16 +10,11 @@ import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.bd.BDConnection;
 import br.sisfarj.ccomp.bd.ConsultingQuery;
 import br.sisfarj.ccomp.bd.UpdatingQuery;
-import br.sisfarj.ccomp.dominio.exceptions.NaoHaAssociacaoException;
-import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
 
-//request.getParameter("numero"), num,
-//request.getParameter("oficio"), date, ok
-//request.getParameter("nome"), string,
-//request.getParameter("nascimento"), date, ok
-//request.getParameter("entrada"), date, ok
-//request.getParameter("associacao"), num,
-//request.getParameter("comprovante"), num,
+import br.sisfarj.ccomp.dominio.exceptions.NaoHaAtletaException;
+import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
+import br.sisfarj.ccomp.gateways.exceptions.AtletaNaoEncontradoException;
+
 
 public class AtletaGateway {
 	public void inserir(String numero, String oficio, String nome, String nascimento, String entrada,
@@ -40,6 +35,50 @@ public class AtletaGateway {
 						+ t2 + "', " +  associacao + ", " + comprovante + ", '" + t3 + "')"), "MATRICULAATLETA");
 		
 	}
-
-
+	
+	
+	public ResultSet listarTodas() throws SQLException, NaoHaAtletaException {
+		
+		BDConnection bdConnection = new BDConnection(false);
+				
+		ResultSet rs = bdConnection.execute(new ConsultingQuery("SELECT matriculaAtleta, nome FROM comp3.atleta"));
+		
+		if (!rs.next()) throw new NaoHaAtletaException();
+		rs.beforeFirst();
+		return rs;
+	}
+	
+	public ResultSet buscar(String matriculaAtleta) throws SQLException, AtletaNaoEncontradoException {
+		
+		BDConnection bdConnection = new BDConnection(false);
+		
+		ResultSet rs = bdConnection.execute(
+				new ConsultingQuery("SELECT * FROM comp3.atleta WHERE matriculaAtleta = " + matriculaAtleta)
+		);
+		
+		if (!rs.next()) throw new AtletaNaoEncontradoException(matriculaAtleta);
+		rs.beforeFirst();
+		return rs;
+		
+	}
+	
+	
+	public void atualizar(String matriculaAtleta, String nome, String entrada, String numero, 
+			String oficio) throws SQLException, ParseException {
+		
+		BDConnection bdConnection = new BDConnection(false);
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
+		
+		Timestamp t1 = new Timestamp(simpleDateFormat.parse(oficio).getTime());
+		Timestamp t2 = new Timestamp(simpleDateFormat.parse(entrada).getTime());
+		
+		int linhasAfetadas = bdConnection.execute(new UpdatingQuery("UPDATE comp3.atleta SET "
+				+ "numeroOficio = " + numero + ", dataOficio = '" + t1 +  "', nome = '" + nome +	"', " 
+				+ "dataEntrada = '" + t2 + "' " 
+				+ "WHERE matriculaAtleta = " + matriculaAtleta));
+		
+		if (linhasAfetadas <= 0) throw new SQLException();
+		
+	}
 }
