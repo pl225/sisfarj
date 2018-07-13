@@ -9,9 +9,12 @@ import java.text.SimpleDateFormat;
 import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.bd.BDConnection;
 import br.sisfarj.ccomp.bd.ConsultingQuery;
+import br.sisfarj.ccomp.bd.CreatingQuery;
 import br.sisfarj.ccomp.bd.UpdatingQuery;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAssociacaoException;
 import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
+import br.sisfarj.ccomp.gateways.exceptions.LocalJaExisteException;
+import br.sisfarj.ccomp.gateways.exceptions.LocalNaoEncontradoException;
 
 public class AssociacaoGateway {
 
@@ -112,6 +115,21 @@ public class AssociacaoGateway {
 		if (!rs.next()) throw new AssociacaoNaoEncontradaException(String.valueOf(matricula));
 		rs.beforeFirst();
 		return rs;
+	}
+
+	public ResultSet buscar() throws SQLException {
+		BDConnection bdConnection = new BDConnection(false);
+		
+		ResultSet rs =  bdConnection.execute(new CreatingQuery(
+			"SELECT * FROM comp3.associacao WHERE 1 = 2"
+		));
+		rs.moveToInsertRow();
+		return rs;
+	}
+
+	public void inserir(ResultSet rs) throws SQLException {
+		rs.insertRow();
+		rs.close();
 	}
 
 }

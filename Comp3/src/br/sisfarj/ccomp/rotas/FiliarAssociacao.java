@@ -1,6 +1,7 @@
 package br.sisfarj.ccomp.rotas;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,16 +54,20 @@ public class FiliarAssociacao extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
-			validarLancamentoInformacoes(request);
-			
+		
 			AssociacaoGateway associacaoGateway = new AssociacaoGateway();
-			associacaoGateway.inserir(request.getParameter("numeroOficio"), 
+			ResultSet rs = associacaoGateway.buscar();
+			AssociacaoMT associacaoMT = new AssociacaoMT(rs);
+			
+			rs = associacaoMT.inserir(request.getParameter("numeroOficio"), 
 					request.getParameter("dataOficio"), 
 					request.getParameter("nome"),
 					request.getParameter("sigla"),
 					request.getParameter("endereco"),
 					request.getParameter("telefone"),
-					request.getParameter("numeroComprovantePagamento"), AssociacaoMT.gerarSenha());
+					request.getParameter("numeroComprovantePagamento"));
+			
+			associacaoGateway.inserir(rs);
 			
 			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
@@ -74,28 +79,6 @@ public class FiliarAssociacao extends HttpServlet {
 		} catch (SQLException | ParseException e) {
 			response.getWriter().println(e.getMessage());
 		}
-		
-	}
-
-	private void validarLancamentoInformacoes(HttpServletRequest request) throws CampoObrigatorioException {
-		String msg = "Preencha todos os campos!";
-		try {
-			Integer.parseInt(request.getParameter("numeroOficio"));
-			Integer.parseInt(request.getParameter("numeroComprovantePagamento"));
-		} catch (NumberFormatException e) {
-			throw new CampoObrigatorioException(msg);
-		}
-		
-		try {
-			new SimpleDateFormat(Constantes.FORMATO_DATA).parse(request.getParameter("dataOficio"));
-		} catch (ParseException | NullPointerException e) {
-			throw new CampoObrigatorioException(msg);
-		}
-		
-		if (request.getParameter("nome") == null) throw new CampoObrigatorioException(msg);
-		if (request.getParameter("sigla") == null) throw new CampoObrigatorioException(msg);
-		if (request.getParameter("endereco") == null) throw new CampoObrigatorioException(msg);
-		if (request.getParameter("telefone") == null) throw new CampoObrigatorioException(msg);
 		
 	}
 

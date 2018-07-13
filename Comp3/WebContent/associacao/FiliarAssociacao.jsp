@@ -9,6 +9,8 @@
 <body>
 
 	<h2>Insira os dados da Associação</h2>
+	
+	<jsp:include page="/WEB-INF/Erro.jsp"></jsp:include>
 
 	<form action="FiliarAssociacao" method="post">
 		
