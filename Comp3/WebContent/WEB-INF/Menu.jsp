@@ -22,6 +22,7 @@
 		<li><a href="ListarAssociacao">12- Listar Associações</a></li>
 		<li><a href="CriarCompeticao">13- Criar Competição</a></li>
 		<li><a href="AlterarCompeticao">14- Alterar Competição</a></li>
+		<li><a href="ListarCompeticao">16- Listar Competição</a></li>
 	</ul>
 
 </body>
