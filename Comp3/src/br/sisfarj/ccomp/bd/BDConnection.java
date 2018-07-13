@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class BDConnection {
-	private static final String URL = "jdbc:derby:/home/matheus/sisfarj;create=true";
-	private static final String USER = "pl225";
-	private static final String PASSWORD = "Pl2252122*";
+	private static final String URL = "jdbc:derby:C:\\Users\\email\\sisfarj;create=true";
+	private static final String USER = "root";
+	private static final String PASSWORD = "root";
 	
 	private static Connection conn;
 	private Statement stmt;
