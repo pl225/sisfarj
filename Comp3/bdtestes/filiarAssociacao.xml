@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+	<associacao 
+		NOME = "Primeiro teste" 
+		DATAOFICIO = "2018-08-01 00:00:00.0" 
+		SIGLA = "PT" 
+		ENDERECO = "Rua teste, 1" 
+		NUMEROPAGAMENTO = "3758362" 
+		TELEFONE = "5362522"
+		NUMEROOFICIO = "54732"
+		SENHA = "123456"
+		TEMACESSO = "T" 
+	/>	
+</dataset>

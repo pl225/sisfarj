@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+
+	<atleta
+		
+		NUMEROOFICIO = "47563"
+		DATAOFICIO = "2017-05-01 09:35:00.0"
+		NOME = "Victor Diniz"
+		DATANASCIMENTO = "1996-08-24 10:00:05.0"
+		DATAENTRADA = "2009-09-09 14:25:00.0"
+		MATRICULASSOCIACAO = "1000000"
+		NUMEROPAGAMENTO = "435241"
+	
+	/>
+</dataset>

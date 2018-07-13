@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+	<localcompeticao 
+		NOME = "Piscina de Xerém"  
+		ENDERECO = "Xerém, 25" 
+		PISCINA25 = "F" 
+		PISCINA50 = "T" 
+	/>	
+</dataset>
