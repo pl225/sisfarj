@@ -37,18 +37,16 @@ public class AssociacaoGateway {
 		
 	}
 
-	public ResultSet listarTodas() throws SQLException, NaoHaAssociacaoException {
+	public ResultSet listarTodas() throws SQLException {
 		
 		BDConnection bdConnection = new BDConnection(false);
 				
-		ResultSet rs = bdConnection.execute(new ConsultingQuery("SELECT matriculaAssociacao, nome FROM comp3.associacao"));
+		ResultSet rs = bdConnection.execute(new ConsultingQuery("SELECT * FROM comp3.associacao"));
 		
-		if (!rs.next()) throw new NaoHaAssociacaoException();
-		rs.beforeFirst();
 		return rs;
 	}
 
-	public ResultSet buscar(String matriculaAssociacao) throws SQLException, AssociacaoNaoEncontradaException {
+	public ResultSet buscar(String matriculaAssociacao) throws SQLException {
 		
 		BDConnection bdConnection = new BDConnection(false);
 		
@@ -64,8 +62,6 @@ public class AssociacaoGateway {
 						+ "WHERE matriculaAssociacao = " + matriculaAssociacao)
 		);
 		
-		if (!rs.next()) throw new AssociacaoNaoEncontradaException(matriculaAssociacao);
-		rs.beforeFirst();
 		return rs;
 		
 	}
@@ -129,6 +125,11 @@ public class AssociacaoGateway {
 
 	public void inserir(ResultSet rs) throws SQLException {
 		rs.insertRow();
+		rs.close();
+	}
+
+	public void atualizar(ResultSet rs) throws SQLException {
+		rs.updateRow();
 		rs.close();
 	}
 

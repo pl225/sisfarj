@@ -17,6 +17,8 @@ import br.sisfarj.ccomp.aplicacao.ConstantesPiscina;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
+import br.sisfarj.ccomp.dominio.AssociacaoMT;
+import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAssociacaoException;
 import br.sisfarj.ccomp.gateways.AssociacaoGateway;
 import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
@@ -44,15 +46,22 @@ public class AlterarAssociacao extends HttpServlet {
 			
 			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
 			AssociacaoGateway associacaoGateway = new AssociacaoGateway();
+			AssociacaoMT associacaoMT;
 			ResultSet rs;
 			
 			if (request.getParameter("matriculaAssociacao") != null) {
+				
 				rs = associacaoGateway.buscar(request.getParameter("matriculaAssociacao"));
-				request.setAttribute("dados", rs);
+				associacaoMT = new AssociacaoMT(rs);
+				ResultSetAdapter rsa = associacaoMT.getAssociacao(Integer.parseInt(request.getParameter("matriculaAssociacao")));
+				request.setAttribute("dados", rsa);
 				request.getRequestDispatcher("associacao/EditarAssociacao.jsp").forward(request, response);
+			
 			} else {			
 				rs = associacaoGateway.listarTodas();
-				request.setAttribute("dados", rs);
+				associacaoMT = new AssociacaoMT(rs);
+				ResultSetAdapter rsa = associacaoMT.listarTodas();
+				request.setAttribute("dados", rsa);
 				request.getRequestDispatcher("associacao/AlterarAssociacao.jsp").forward(request, response);
 			}
 		} catch (UsuarioNaoIdentificadoException e) {
@@ -72,10 +81,12 @@ public class AlterarAssociacao extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
-			validarLancamentoInformacoes(request);
 			
 			AssociacaoGateway associacaoGateway = new AssociacaoGateway();
-			associacaoGateway.atualizar(
+			ResultSet rs = associacaoGateway.buscar(request.getParameter("matriculaAssociacao"));
+			AssociacaoMT associacaoMT = new AssociacaoMT(rs);
+			
+			rs = associacaoMT.atualizar(
 				request.getParameter("matriculaAssociacao"),
 				request.getParameter("numeroOficio"), 
 				request.getParameter("dataOficio"), 
@@ -85,11 +96,13 @@ public class AlterarAssociacao extends HttpServlet {
 						ConstantesPiscina.TRUE.getValor() : ConstantesPiscina.FALSE.getValor() 
 			);
 			
+			associacaoGateway.atualizar(rs);
+			
 			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
 			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
-		} catch (CampoObrigatorioException e) {
+		} catch (CampoObrigatorioException | AssociacaoNaoEncontradaException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			doGet(request, response);
 		} catch (SQLException | ParseException e) {
@@ -97,23 +110,6 @@ public class AlterarAssociacao extends HttpServlet {
 		}
 	}
 	
-	private void validarLancamentoInformacoes(HttpServletRequest request) throws CampoObrigatorioException {
-		String msg = "Preencha todos os campos!";
-		try {
-			Integer.parseInt(request.getParameter("numeroOficio"));
-		} catch (NumberFormatException e) {
-			throw new CampoObrigatorioException(msg);
-		}
-		
-		try {
-			new SimpleDateFormat(Constantes.FORMATO_DATA).parse(request.getParameter("dataOficio"));
-		} catch (ParseException | NullPointerException e) {
-			throw new CampoObrigatorioException(msg);
-		}
-		
-		if (request.getParameter("nome") == null) throw new CampoObrigatorioException(msg);
-		if (request.getParameter("sigla") == null) throw new CampoObrigatorioException(msg);
-		
-	}
+	
 
 }
