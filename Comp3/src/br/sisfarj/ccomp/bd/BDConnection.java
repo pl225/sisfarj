@@ -86,8 +86,12 @@ public class BDConnection {
 	public void rollback () throws SQLException {
 		if (this.transacao) conn.rollback();
 	}
-	
-	public void algo () {
-		
+
+	public ResultSet execute(CreatingQuery creatingQuery) throws SQLException {
+		if (this.rs != null) this.rs.close();
+		if (this.stmt != null) this.stmt.close();
+		this.stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+		this.rs = this.stmt.executeQuery(creatingQuery.toString());
+		return this.rs;
 	}
 }

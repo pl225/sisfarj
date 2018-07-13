@@ -9,8 +9,10 @@ import java.text.SimpleDateFormat;
 import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.bd.BDConnection;
 import br.sisfarj.ccomp.bd.ConsultingQuery;
+import br.sisfarj.ccomp.bd.CreatingQuery;
 import br.sisfarj.ccomp.bd.UpdatingQuery;
 import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
+import br.sisfarj.ccomp.gateways.exceptions.LocalJaExisteException;
 import br.sisfarj.ccomp.gateways.exceptions.LocalNaoEncontradoException;
 import br.sisfarj.ccomp.gateways.exceptions.PessoaNaoEncontradaException;
 //
@@ -33,7 +35,7 @@ public class LocalCompeticaoGateway {
 		BDConnection bdConnection = new BDConnection(false);
 		
 		ResultSet rs = bdConnection.execute(new ConsultingQuery("SELECT * FROM comp3.LocalCompeticao"));
-		if (!rs.next()) throw new LocalNaoEncontradoException("Nenhum local de competição encontrado");
+		if (!rs.next()) throw new LocalNaoEncontradoException("Nenhum local de competiï¿½ï¿½o encontrado");
 		rs.beforeFirst();
 		return rs;
 	}
@@ -41,7 +43,6 @@ public class LocalCompeticaoGateway {
 	public ResultSet buscar(String endereco) throws SQLException, LocalNaoEncontradoException {
 		
 		BDConnection bdConnection = new BDConnection(false);
-		System.out.println("Estamos aqui");
 		ResultSet rs = bdConnection.execute(
 				new ConsultingQuery("SELECT "
 						+ "*"
@@ -71,6 +72,24 @@ public class LocalCompeticaoGateway {
 		
 		if (linhasAfetadas <= 0) throw new SQLException();
 		
+	}
+
+	public void inserir(ResultSet rs) throws SQLException {
+		rs.insertRow();
+		rs.close();
+	}
+
+	public ResultSet criar(String endereco) throws SQLException, LocalJaExisteException {
+		BDConnection bdConnection = new BDConnection(false);
+		
+		try {
+			this.buscar(endereco);
+			throw new LocalJaExisteException();
+		} catch (LocalNaoEncontradoException e) {
+			return bdConnection.execute(new CreatingQuery(
+				"SELECT * FROM comp3.localcompeticao WHERE 1 = 2"
+			));
+		}
 	}
 
 }
