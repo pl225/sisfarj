@@ -23,7 +23,7 @@ public class LocalCompeticaoMT {
 		this.rs.updateString("ENDERECO", endereco);
 		this.rs.updateString("PISCINA25", String.valueOf(piscina25));
 		this.rs.updateString("PISCINA50", String.valueOf(piscina50));
-		
+		this.rs.updateRow();
 		new LocalCompeticaoGateway().inserir(this.rs);
 		
 	}
