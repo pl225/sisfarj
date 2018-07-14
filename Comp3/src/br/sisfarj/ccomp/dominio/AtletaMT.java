@@ -16,8 +16,11 @@ import br.sisfarj.ccomp.bd.BDConnection;
 import br.sisfarj.ccomp.bd.UpdatingQuery;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetAssociacao;
+import br.sisfarj.ccomp.dominio.adapter.ResultSetAtleta;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAssociacaoException;
+import br.sisfarj.ccomp.dominio.exceptions.NaoHaAtletaException;
 import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
+import br.sisfarj.ccomp.gateways.exceptions.AtletaNaoEncontradoException;
 import br.sisfarj.ccomp.gateways.exceptions.PessoaNaoEncontradaException;
 
 public class AtletaMT {
@@ -70,5 +73,64 @@ public class AtletaMT {
 				
 	}
 
+	public ResultSetAdapter getAtleta(int matricula) throws SQLException, AtletaNaoEncontradoException {
+		getMatricula(matricula);
+		return new ResultSetAtleta(this.rs);
+	}
+	
+	public int getMatricula(int matricula) throws SQLException, AtletaNaoEncontradoException {
+		this.rs.beforeFirst();
+		while (rs.next()) {
+			if (rs.getInt("matriculaAtleta") == matricula) return matricula;
+		}
+		throw new AtletaNaoEncontradoException(String.valueOf(matricula));
+	}
+
+	public ResultSetAdapter listarTodos() throws NaoHaAtletaException, SQLException {
+		if (!this.rs.next()) throw new NaoHaAtletaException();
+			this.rs.beforeFirst();
+			return new ResultSetAtleta(this.rs);
+	}
+
+	public ResultSet atualizar(String matriculaAtleta, String nome, String entrada,
+			String numero, String oficio) throws SQLException, ParseException, CampoObrigatorioException, AtletaNaoEncontradoException {
+
+		validarLancamentoInformacoesAtualizacao(nome, entrada,
+				numero, oficio);
+		
+		getMatricula(Integer.parseInt(matriculaAtleta));		
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
+		Timestamp t1 = new Timestamp(simpleDateFormat.parse(entrada).getTime());
+		Timestamp t2 = new Timestamp(simpleDateFormat.parse(oficio).getTime());
+		
+		this.rs.updateString("NOME", nome);
+		this.rs.updateString("NUMEROOFICIO", numero);
+		this.rs.updateString("DATAOFICIO", t2.toString());
+		this.rs.updateString("DATAENTRADA", t1.toString());
+	
+		return this.rs;
+
+	}
+
+	private void validarLancamentoInformacoesAtualizacao(String nome, String entrada, String numero, String oficio)  throws CampoObrigatorioException {
+		
+		String msg = "Preencha todos os campos!";
+		try {
+			Integer.parseInt(numero);
+		} catch (NumberFormatException e) {
+			throw new CampoObrigatorioException(msg);
+		}
+		
+		try {
+			new SimpleDateFormat(Constantes.FORMATO_DATA).parse(oficio);
+			new SimpleDateFormat(Constantes.FORMATO_DATA).parse(entrada);
+		} catch (ParseException | NullPointerException e) {
+			throw new CampoObrigatorioException(msg);
+		}
+		
+		if (nome == null || nome.isEmpty()) throw new CampoObrigatorioException(msg);
+		
+	}
 }
 

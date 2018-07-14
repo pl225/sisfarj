@@ -8,15 +8,14 @@
 </head>
 <body>
 
-	<%@ page import = "java.sql.ResultSet" %>
-
+	<%@ page import = "br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter" %>
+	
 	<%
-		ResultSet rs = (ResultSet) request.getAttribute("dados");
-		rs.next();
+		ResultSetAdapter rs = (ResultSetAdapter) request.getAttribute("dados");
 	%>
-
 	<h2>Edite as informações do Atleta <%= rs.getString("nome") %></h2>
 	
+	<jsp:include page="/WEB-INF/Erro.jsp"></jsp:include>	
 	
 	<form action="AlterarAtleta?matriculaAtleta=<%= rs.getInt("matriculaAtleta") %>" method="post">
 		
