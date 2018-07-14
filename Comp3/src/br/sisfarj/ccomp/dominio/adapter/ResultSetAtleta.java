@@ -14,6 +14,7 @@ public class ResultSetAtleta extends ResultSetAdapter {
 		ArrayList<String> colunas =  new ArrayList<String>();
 		
 		colunas.add("matriculaAtleta");
+		colunas.add("matriculaAssociacao");
 		colunas.add("nome");
 		colunas.add("numeroOficio");
 		colunas.add("dataOficio");

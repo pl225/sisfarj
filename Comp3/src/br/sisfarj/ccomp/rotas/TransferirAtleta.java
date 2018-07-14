@@ -16,6 +16,8 @@ import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
+import br.sisfarj.ccomp.dominio.AtletaMT;
+import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAssociacaoException;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAtletaException;
 import br.sisfarj.ccomp.gateways.AssociacaoGateway;
@@ -47,26 +49,36 @@ public class TransferirAtleta extends HttpServlet {
 			
 			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
 			AtletaGateway atletaGateway = new AtletaGateway();
+			AtletaMT atletaMT;
 			ResultSet rs;
 			
 			if (request.getParameter("matriculaAtleta") != null) {
+				
 				rs = atletaGateway.buscar(request.getParameter("matriculaAtleta"));
-				request.setAttribute("dados", rs);
+				atletaMT = new AtletaMT(rs);
+				ResultSetAdapter rsa = atletaMT.getAtleta(Integer.parseInt(request.getParameter("matriculaAtleta")));
+				request.setAttribute("dados", rsa);
 				request.getRequestDispatcher("atleta/TransferirAtleta.jsp").forward(request, response);
+				
 			} else {			
-				rs = atletaGateway.listarTodos();
-				request.setAttribute("dados", rs);
+				rs = atletaGateway.listarTodos(); 
+				atletaMT = new AtletaMT(rs);
+				ResultSetAdapter rsa = atletaMT.listarTodos();
+				request.setAttribute("dados", rsa);
 				request.getRequestDispatcher("atleta/ListarTransferirAtleta.jsp").forward(request, response);
+				
 			}
 		} catch (UsuarioNaoIdentificadoException e) {
-			request.setAttribute(Constantes.ERRO, "Usu√°rio n√£o identificado!");
+			request.setAttribute(Constantes.ERRO, "Usu·rio n„o identificado!");
 			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException e) {
 			response.getWriter().println(e.getMessage());
-			
-		} catch (AtletaNaoEncontradoException | NaoHaAtletaException e) {
+		} catch (AtletaNaoEncontradoException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
-			request.getRequestDispatcher("Menu").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+		} catch (NaoHaAtletaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}
@@ -78,18 +90,21 @@ public class TransferirAtleta extends HttpServlet {
 		
 		try {
 			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
-			validarLancamentoInformacoes(request);
 			
 			AtletaGateway atletaGateway = new AtletaGateway();
+			ResultSet rs = atletaGateway.buscar(request.getParameter("matriculaAtleta"));
+			AtletaMT atletaMT = new AtletaMT(rs);
+			 
+			rs = atletaMT.transferir(request.getParameter("matriculaAtleta"),
+					                 request.getParameter("matriculaAssociacao"), 
+					                 request.getParameter("numeroPagamento"), 
+					                 request.getParameter("entrada"),
+					                 request.getParameter("numero"), 
+					                 request.getParameter("oficio"));
 			
-			atletaGateway.transferirAtleta(request.getParameter("matriculaAtleta"), 
-					request.getParameter("associacao"),
-					request.getParameter("numero"),
-					request.getParameter("oficio"),
-					request.getParameter("comprovante"),
-					request.getParameter("entrada"));
-		
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			atletaGateway.atualizar(rs);
+			
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usu·rio n„o identificado!");
 			request.getRequestDispatcher("Menu").forward(request, response);
@@ -97,31 +112,14 @@ public class TransferirAtleta extends HttpServlet {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			doGet(request, response);
 		} catch (SQLException | ParseException e) {
-			response.getWriter().println(e.getMessage());
-		} catch (AssociacaoNaoEncontradaException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
-			doGet(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
+		} catch (AtletaNaoEncontradoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
-	private void validarLancamentoInformacoes(HttpServletRequest request) throws CampoObrigatorioException {
-		String msg = "Preencha todos os campos!";
-		try {
-			System.out.println("AQUI");
-			Integer.parseInt(request.getParameter("numero"));
-			Integer.parseInt(request.getParameter("comprovante"));
-			Integer.parseInt(request.getParameter("associacao"));
-		} catch (NumberFormatException e) {
-			throw new CampoObrigatorioException(msg);
-		}
-		
-		try {
-			new SimpleDateFormat(Constantes.FORMATO_DATA).parse(request.getParameter("oficio"));
-			new SimpleDateFormat(Constantes.FORMATO_DATA).parse(request.getParameter("entrada"));
-		} catch (ParseException | NullPointerException e) {
-			throw new CampoObrigatorioException(msg);
-		}
-				
-	}
+	
 
 }
