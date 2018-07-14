@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.bd.BDConnection;
 import br.sisfarj.ccomp.bd.ConsultingQuery;
+import br.sisfarj.ccomp.bd.CreatingQuery;
 import br.sisfarj.ccomp.bd.UpdatingQuery;
 
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAtletaException;
@@ -104,6 +105,21 @@ public class AtletaGateway {
 		
 		if (linhasAfetadas <= 0) throw new SQLException();
 		
+	}
+	
+	public void inserir(ResultSet rs) throws SQLException {
+		rs.insertRow();
+		rs.close();
+	}
+	
+	public ResultSet buscar() throws SQLException {
+		BDConnection bdConnection = new BDConnection(false);
+		
+		ResultSet rs =  bdConnection.execute(new CreatingQuery(
+			"SELECT * FROM comp3.atleta WHERE 1 = 2"
+		));
+		rs.moveToInsertRow();
+		return rs;
 	}
 	
 	

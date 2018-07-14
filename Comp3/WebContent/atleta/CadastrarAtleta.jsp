@@ -10,13 +10,7 @@
 
 	<h2>Insira as informações do Atleta</h2>
 	
-		<%
-			if (request.getAttribute("erro") != null) {
-		%>
-		<p><%= request.getAttribute("erro") %></p>
-		<%
-			}
-		%>
+	<jsp:include page="/WEB-INF/Erro.jsp"></jsp:include>
 		
 	<form method="post" action="CadastrarAtleta">
 		<label for="numero">Número</label>
