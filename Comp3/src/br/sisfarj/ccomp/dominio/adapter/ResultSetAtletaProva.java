@@ -16,6 +16,8 @@ public class ResultSetAtletaProva extends ResultSetAdapter{
 		colunas.add("matriculaAtleta");
 		colunas.add("nome");
 		colunas.add("tempo");
+		colunas.add("pontuacao");
+		colunas.add("sigla");
 		
 		return colunas;
 	}

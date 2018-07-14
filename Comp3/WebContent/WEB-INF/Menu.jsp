@@ -23,6 +23,7 @@
 		<li><a href="IdentificarUsuario?pagina=CriarCompeticao">13- Criar Competição</a></li>
 		<li><a href="IdentificarUsuario?pagina=AlterarCompeticao">14- Alterar Competição</a></li>
 		<li><a href="IdentificarUsuario?pagina=ListarCompeticao">16- Listar Competição</a></li>
+		<li><a href="IdentificarUsuario?pagina=ListarPontuacaoFinal">19- Listar pontuação final</a></li>
 	</ul>
 
 </body>

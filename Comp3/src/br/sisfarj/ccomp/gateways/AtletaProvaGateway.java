@@ -41,4 +41,38 @@ public class AtletaProvaGateway {
 		
 	}
 
+	public ResultSet buscarAtletasCompeticao(String dataCompeticao, String localCompeticao) throws SQLException {
+		
+		BDConnection bdConnection = new BDConnection(false);
+		
+		ResultSet rs = bdConnection.execute(
+				new ConsultingQuery("SELECT * FROM comp3.atletaprova "
+						+ "WHERE dataCompeticao = '" + dataCompeticao + "' AND endereco = '" + localCompeticao + "'"));
+		return rs;
+	}
+
+	public void alterarLinha(ResultSet rs) throws SQLException {
+		rs.updateRow();
+	}
+
+	public void terminarAlterarLinhas(ResultSet rs) throws SQLException {
+		rs.close();
+	}
+
+	public ResultSet calcularPontuacao(String dataCompeticao, String endereco) throws SQLException {
+		BDConnection bdConnection = new BDConnection(false);
+		
+		ResultSet rs = bdConnection.execute(
+				new ConsultingQuery("SELECT  SUM(pontuacao) as pontuacao, " + 
+						"ass.nome, " + 
+						"sigla, " + 
+						"ass.matriculaAssociacao " + 
+						"FROM comp3.atletaprova ap " + 
+						"INNER JOIN comp3.atleta a ON a.matriculaAtleta = ap.matriculaAtleta " + 
+						"INNER JOIN comp3.associacao ass ON ass.matriculaAssociacao = a.matriculaAssociacao " + 
+						"WHERE ap.dataCompeticao = '" + dataCompeticao + "' AND ap.endereco = '" + endereco + "' " + 
+						"GROUP BY ass.matriculaassociacao, ass.nome, sigla ORDER BY pontuacao DESC"));
+		return rs;
+	}
+
 }

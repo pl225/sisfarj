@@ -15,9 +15,12 @@ import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.bd.BDConnection;
 import br.sisfarj.ccomp.bd.UpdatingQuery;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
+import br.sisfarj.ccomp.dominio.adapter.ResultSetAtletaProva;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetCompeticao;
 import br.sisfarj.ccomp.dominio.exceptions.CompeticaoJaExisteException;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaCompeticaoException;
+import br.sisfarj.ccomp.dominio.exceptions.NaoHaPontuacaoException;
+import br.sisfarj.ccomp.gateways.AtletaProvaGateway;
 import br.sisfarj.ccomp.gateways.CompeticaoGateway;
 import br.sisfarj.ccomp.gateways.CompeticaoProvaGateway;
 import br.sisfarj.ccomp.gateways.ProvaGateway;
@@ -157,6 +160,16 @@ public class CompeticaoMT {
 		if (classes == null || classes.length == 0) throw new CampoObrigatorioException(msg);
 		if (categorias == null || categorias.length == 0) throw new CampoObrigatorioException(msg);
 		
+	}
+
+	public ResultSetAdapter listarPontuacaoFinal(String dataCompeticao, String endereco) throws SQLException, CompeticaoNaoEncontradaException, ParseException, NaoHaPontuacaoException {
+		
+		getCompeticao(dataCompeticao, endereco);
+		AtletaProvaGateway atletaProvaGateway = new AtletaProvaGateway();
+		ResultSet rs = atletaProvaGateway.calcularPontuacao(dataCompeticao, endereco);
+		
+		AtletaProvaMT atletaProvaMT = new AtletaProvaMT(rs);
+		return atletaProvaMT.listarPontuacaoFinal();
 	}
 	
 }

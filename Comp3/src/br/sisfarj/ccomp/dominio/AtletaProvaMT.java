@@ -9,6 +9,7 @@ import br.sisfarj.ccomp.dominio.adapter.ResultSetAtleta;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetAtletaProva;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetProva;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAtletaException;
+import br.sisfarj.ccomp.dominio.exceptions.NaoHaPontuacaoException;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaProvaException;
 
 public class AtletaProvaMT {
@@ -21,6 +22,12 @@ public class AtletaProvaMT {
 
 	public ResultSetAdapter listarTudo() throws NaoHaAtletaException, SQLException {
 		if (!this.rs.next()) throw new NaoHaAtletaException();
+		this.rs.beforeFirst();
+		return new ResultSetAtletaProva(this.rs);
+	}
+
+	public ResultSetAdapter listarPontuacaoFinal() throws SQLException, NaoHaPontuacaoException {
+		if (!this.rs.next()) throw new NaoHaPontuacaoException();
 		this.rs.beforeFirst();
 		return new ResultSetAtletaProva(this.rs);
 	}
