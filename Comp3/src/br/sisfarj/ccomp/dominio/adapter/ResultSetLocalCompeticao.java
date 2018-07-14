@@ -3,7 +3,7 @@ package br.sisfarj.ccomp.dominio.adapter;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class ResultSetLocalCompeticao extends ResultSetAdapter {
+public class ResultSetLocalCompeticao extends ResultSetAdapter { //Oi
 
 	public ResultSetLocalCompeticao(ResultSet rs) {
 		super(rs);

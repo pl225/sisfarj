@@ -9,14 +9,16 @@
 </head>
 <body>
 
-<%@ page import = "java.sql.ResultSet" %>
-
+	<%@ page import = "br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter" %>
+	
 	<%
-		ResultSet rs = (ResultSet) request.getAttribute("dados");
+		ResultSetAdapter rs = (ResultSetAdapter) request.getAttribute("dados");
 	%>
 
 	<h2>Selecione um atleta</h2>
-
+	
+	<jsp:include page="/WEB-INF/Erro.jsp"></jsp:include>
+	
 	<table>
 		<thead>
 			<tr>

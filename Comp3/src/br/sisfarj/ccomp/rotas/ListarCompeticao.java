@@ -14,8 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
+import br.sisfarj.ccomp.dominio.AtletaProvaMT;
 import br.sisfarj.ccomp.dominio.CompeticaoMT;
+import br.sisfarj.ccomp.dominio.ProvaMT;
+import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
+import br.sisfarj.ccomp.dominio.exceptions.NaoHaAtletaException;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaCompeticaoException;
+import br.sisfarj.ccomp.dominio.exceptions.NaoHaProvaException;
 import br.sisfarj.ccomp.gateways.AtletaProvaGateway;
 import br.sisfarj.ccomp.gateways.CompeticaoGateway;
 import br.sisfarj.ccomp.gateways.CompeticaoProvaGateway;
@@ -52,25 +57,41 @@ public class ListarCompeticao extends HttpServlet {
 			if (request.getParameter("nome") != null && request.getParameter("classe") != null && 
 					request.getParameter("categoria") != null) {
 				
+				
 				rs = new AtletaProvaGateway().buscarAtletasProva(request.getParameter("nome"),
 						                                         request.getParameter("classe"), 
 						                                         request.getParameter("categoria"), 
 						                                         request.getParameter("dataCompeticao"), 
 						                                         request.getParameter("endereco"));
 				
+				AtletaProvaMT atletaProvaMT= new AtletaProvaMT(rs);
+				ResultSetAdapter rsA = atletaProvaMT.listarTudo();
+				
 				request.setAttribute("dados", rs);
 				request.getRequestDispatcher("competicao/ListarCompeticaoProva.jsp").forward(request, response);
 				
 			} else if (request.getParameter("dataCompeticao") != null && request.getParameter("endereco") != null) {
+				
 				rs = competicaoGateway.buscar(request.getParameter("dataCompeticao"), request.getParameter("endereco"));
-				rsProvas = cpg.getProvasPelaCompeticao(request.getParameter("dataCompeticao"), request.getParameter("endereco"));
-				request.setAttribute("dados", rsProvas);
-				request.setAttribute("dadosCompeticao", rs);
+				CompeticaoMT competicaoMT = new CompeticaoMT(rs);
+				ResultSetAdapter rsa = competicaoMT.getCompeticao(request.getParameter("dataCompeticao"), request.getParameter("endereco"));
+				
+				//rsProvas = cpg.getProvasPelaCompeticao(request.getParameter("dataCompeticao"), request.getParameter("endereco"));
+				
+				rsProvas = competicaoMT.getProvas(request.getParameter("dataCompeticao"), request.getParameter("endereco"));
+				ProvaMT provaMT = new ProvaMT(rsProvas);
+				ResultSetAdapter rsaProvas = provaMT.listarTudo();
+				
+				request.setAttribute("dados", rsaProvas);
+				request.setAttribute("dadosCompeticao", rsa);
 				request.getRequestDispatcher("competicao/ListarCompeticao.jsp").forward(request, response);
 			
 			} else {
 				rs = competicaoGateway.listarTodas();
-				request.setAttribute("dados", rs);
+				CompeticaoMT competicaoMT = new CompeticaoMT(rs);
+				ResultSetAdapter rsa = competicaoMT.listarTodas();
+				
+				request.setAttribute("dados", rsa);
 				request.getRequestDispatcher("competicao/ListarCompeticoes.jsp").forward(request, response);	
 			}
 			
@@ -80,10 +101,12 @@ public class ListarCompeticao extends HttpServlet {
 			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException | ParseException e) {
 			response.getWriter().println(e.getMessage());
-		} catch (CompeticaoNaoEncontradaException | ProvaSemAtletaException e) {
+
+		} catch (CompeticaoNaoEncontradaException | ProvaSemAtletaException | NaoHaCompeticaoException | NaoHaProvaException | NaoHaAtletaException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			request.getRequestDispatcher("Menu").forward(request, response);
 		} 
+		
 	}
 
 	/**

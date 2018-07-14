@@ -65,7 +65,7 @@ public class AtletaGateway {
 	}
 	
 	
-	public void atualizar(String matriculaAtleta, String matriculaAssociacao, String nome, String entrada, String numero, 
+/*	public void atualizar(String matriculaAtleta, String matriculaAssociacao, String nome, String entrada, String numero, 
 			String oficio) throws SQLException, ParseException {
 		
 		BDConnection bdConnection = new BDConnection(false);
@@ -82,6 +82,11 @@ public class AtletaGateway {
 		
 		if (linhasAfetadas <= 0) throw new SQLException();
 		
+	}*/
+	
+	public void atualizar(ResultSet rs) throws SQLException {
+		rs.updateRow();
+		rs.close();
 	}
 	
 	public void transferirAtleta(String matriculaAtleta, String matriculaAssociacao, String numeroOficio, String dataOficio, 

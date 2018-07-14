@@ -35,7 +35,7 @@ public class CompeticaoMT {
 		
 		this.rs.beforeFirst();
 		while (rs.next()) {
-			if (rs.getString("dataCompeticao").equals(dataCompeticao) && rs.getString(endereco).equals(endereco)) {
+			if (rs.getString("dataCompeticao").equals(dataCompeticao) && rs.getString("endereco").equals(endereco)) {
 				CompeticaoProvaGateway competicaoProvaGateway = new CompeticaoProvaGateway();
 				ResultSet rs = competicaoProvaGateway.getProvasPelaCompeticao(dataCompeticao, endereco);
 				//CompeticaoProvaMT competicaoProvaMT = new CompeticaoProvaMT(rs);

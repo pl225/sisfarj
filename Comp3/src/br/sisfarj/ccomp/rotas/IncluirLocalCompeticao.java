@@ -1,9 +1,8 @@
 package br.sisfarj.ccomp.rotas;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +15,8 @@ import br.sisfarj.ccomp.aplicacao.ConstantesPiscina;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
+import br.sisfarj.ccomp.dominio.LocalCompeticaoMT;
+import br.sisfarj.ccomp.dominio.exceptions.InformacoesInvalidasException;
 import br.sisfarj.ccomp.gateways.LocalCompeticaoGateway;
 
 /**
@@ -54,40 +55,34 @@ public class IncluirLocalCompeticao extends HttpServlet {
 		// TODO Auto-generated method stub
 		try {
 			
-			validarLancamentoInformacoes(request);
+			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
+			
 			LocalCompeticaoGateway lcg = new LocalCompeticaoGateway();
-			char p25, p50;
+			ResultSet rs = lcg.buscar();
+			LocalCompeticaoMT localCompeticaoMT = new LocalCompeticaoMT(rs);
 			
-			if(request.getParameter("piscina25") == null) p25 = ConstantesPiscina.FALSE.getValor(); else p25 = ConstantesPiscina.TRUE.getValor();
-			if(request.getParameter("piscina50") == null) p50 = ConstantesPiscina.FALSE.getValor(); else p50 = ConstantesPiscina.TRUE.getValor(); 
+			rs = localCompeticaoMT.inserir(request.getParameter("nome"),
+					                       request.getParameter("endereco"),
+					                       request.getParameter("piscina25"),
+					                       request.getParameter("piscina50"));
 			
-			System.out.println(p25);
-			System.out.println(p50);
-			
-			lcg.inserir(request.getParameter("nome"), request.getParameter("endereco"), p25, p50);
+			lcg.inserir(rs);
 			
 			request.getRequestDispatcher("Menu").forward(request, response);
 			
-		} catch (CampoObrigatorioException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) {
+			response.getWriter().println(e.getMessage());
+		} catch (InformacoesInvalidasException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			doGet(request, response);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (CampoObrigatorioException e) {
+			request.setAttribute(Constantes.ERRO, e.getMessage());
+			doGet(request, response);
+		} catch (UsuarioNaoIdentificadoException e) {
+			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
+			request.getRequestDispatcher("Menu").forward(request, response);
 		}
 	}
 
-	private void validarLancamentoInformacoes(HttpServletRequest request) throws CampoObrigatorioException {
-		// TODO Auto-generated method stub
-		String msg = "Preencha todos os campos!";
-		String msgPiscina = "Escolha pelo menos um tipo de piscina!";
-		
-		if (request.getParameter("nome") == null) throw new CampoObrigatorioException(msg);
-		if (request.getParameter("endereco") == null) throw new CampoObrigatorioException(msg);
-		if (request.getParameter("piscina25") == null && request.getParameter("piscina50") == null) throw new CampoObrigatorioException(msgPiscina);
-		
-		
-	}
 
 }

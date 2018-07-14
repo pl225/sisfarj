@@ -4,6 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
+import br.sisfarj.ccomp.dominio.adapter.ResultSetAtleta;
+import br.sisfarj.ccomp.dominio.adapter.ResultSetProva;
+import br.sisfarj.ccomp.dominio.exceptions.NaoHaAtletaException;
+import br.sisfarj.ccomp.dominio.exceptions.NaoHaProvaException;
+
 public class ProvaMT {
 	
 	private ResultSet rs;
@@ -44,6 +50,12 @@ public class ProvaMT {
 		this.rs.updateString("endereco", endereco);
 		
 		return this.rs;
+	}
+
+	public ResultSetAdapter listarTudo() throws NaoHaProvaException, SQLException {
+		if (!this.rs.next()) throw new NaoHaProvaException();
+		this.rs.beforeFirst();
+		return new ResultSetProva(this.rs);
 	}
 		
 }

@@ -8,14 +8,13 @@
 <title>Listar Competição</title>
 </head>
 <body>
-	<%@ page import = "java.sql.ResultSet" %>
+		<%@ page import = "br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter" %>
 
 	<%
-		ResultSet rsProvas = (ResultSet) request.getAttribute("dados");
-		rsProvas.next();
-		rsProvas.beforeFirst();
-		ResultSet rsCompeticao = (ResultSet) request.getAttribute("dadosCompeticao");
-		rsCompeticao.next();
+		ResultSetAdapter rsProvas = (ResultSetAdapter) request.getAttribute("dados");
+		
+		ResultSetAdapter rsCompeticao = (ResultSetAdapter) request.getAttribute("dadosCompeticao");
+		
 		
 	%>
 
