@@ -70,7 +70,7 @@ public class AssociacaoMT {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
 		
 		this.rs.updateString("NOME", nome);
-		this.rs.updateString("TELEFONE", endereco);
+		this.rs.updateString("TELEFONE", telefone);
 		this.rs.updateString("SIGLA", sigla);
 		this.rs.updateString("ENDERECO", endereco);
 		this.rs.updateString("NUMEROPAGAMENTO", numeroPagamento);

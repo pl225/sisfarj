@@ -19,22 +19,21 @@
 			}
 		%>
 		
-		<%@ page import = "java.sql.ResultSet" %>
-
+		<%@ page import = "br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter" %>
+	
 		<%
-			ResultSet rs = (ResultSet) request.getAttribute("dados");
-			rs.next();
+			ResultSetAdapter rs = (ResultSetAdapter) request.getAttribute("dados");
 		%>
 		
 	<form method="post" action="TransferirAtleta">
 		
 		<fieldset>
-		<legend>Transferir Atleta <%= rs.getString("nome") %> - <%= rs.getString("matriculaAtleta") %></legend>
+		<legend>Transferir Atleta <%= rs.getString("nome") %> - Matrícula Atleta: <%= rs.getString("matriculaAtleta") %> - Matrícula Associação: <%= rs.getString("matriculaAssociacao") %></legend>
 		<input type="hidden" name="matriculaAtleta" value="<%= rs.getString("matriculaAtleta") %>">
 		<br></br>
 		
 		<label for="associacao">Matrícula da Associação</label>
-		<input type="text" name="associacao">
+		<input type="text" name="matriculaAssociacao">
 		<br></br>
 		
 		<label for="numero">Número do Ofício</label>
@@ -46,7 +45,7 @@
 		<br></br>
 		
 		<label for="comprovante">Número do Comprovante</label>
-		<input type="text" name="comprovante">	
+		<input type="text" name="numeroPagamento">	
 		<br></br>
 		
 		<label for="entrada">Data de Entrada na Associação</label>

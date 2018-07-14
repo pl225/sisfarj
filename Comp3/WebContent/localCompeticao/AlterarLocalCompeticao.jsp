@@ -9,10 +9,10 @@
 </head>
 <body>
 
-	<%@ page import = "java.sql.ResultSet" %>
+	<%@ page import = "br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter" %>
 
 	<%
-		ResultSet rs = (ResultSet) request.getAttribute("dados");
+		ResultSetAdapter rs = (ResultSetAdapter) request.getAttribute("dados");
 	%>
 
 	<h2>Selecione um local de competição</h2>
@@ -21,9 +21,6 @@
 		<thead>
 			<tr>
 				<th>Nome</th>
-				<th>Endereço</th>
-				<th>Piscina 25m</th>
-				<th>Piscina 50m</th>
 				<th>Ações</th>
 			</tr>
 		</thead>
@@ -35,9 +32,6 @@
 			
 			<tr>
 				<td><%= rs.getString("nome") %></td>
-				<td><%= rs.getString("endereco") %></td>
-				<td><%= rs.getString("piscina25") %></td>
-				<td><%= rs.getString("piscina50") %></td>
 				<td><a href="AlterarLocalCompeticao?endereco=
 				<%= rs.getString("endereco") %>">Alterar</a></td>
 			</tr>

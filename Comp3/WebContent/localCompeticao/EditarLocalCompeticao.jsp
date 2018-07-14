@@ -9,11 +9,10 @@
 </head>
 <body>
 	
-	<%@ page import = "java.sql.ResultSet" %>
+	<%@ page import = "br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter" %>
 
 	<%
-		ResultSet rs = (ResultSet) request.getAttribute("dados");
-		rs.next();
+		ResultSetAdapter rs = (ResultSetAdapter) request.getAttribute("dados");
 	%>
 	
 	<%

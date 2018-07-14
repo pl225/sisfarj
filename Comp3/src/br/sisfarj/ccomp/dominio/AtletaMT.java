@@ -112,6 +112,50 @@ public class AtletaMT {
 		return this.rs;
 
 	}
+	
+	public ResultSet transferir(String matriculaAtleta, String matriculaAssociacao, String numeroPagamento, String entrada,
+			String numero, String oficio) throws SQLException, ParseException, CampoObrigatorioException, AtletaNaoEncontradoException {
+
+		validarLancamentoInformacoesTransferencia(matriculaAssociacao, numeroPagamento, entrada,
+				numero, oficio);
+		
+		getMatricula(Integer.parseInt(matriculaAtleta));		
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
+		Timestamp t1 = new Timestamp(simpleDateFormat.parse(entrada).getTime());
+		Timestamp t2 = new Timestamp(simpleDateFormat.parse(oficio).getTime());
+		
+		this.rs.updateString("MATRICULAASSOCIACAO", matriculaAssociacao);
+		this.rs.updateString("NUMEROPAGAMENTO", numeroPagamento);
+		this.rs.updateString("NUMEROOFICIO", numero);
+		this.rs.updateString("DATAOFICIO", t2.toString());
+		this.rs.updateString("DATAENTRADA", t1.toString());
+	
+		return this.rs;
+
+	}
+
+	private void validarLancamentoInformacoesTransferencia(String matriculaAssociacao, String numeroComprovante, String entrada, String numero,
+			String oficio) throws CampoObrigatorioException {
+		
+		String msg = "Preencha todos os campos!";
+		try {
+			Integer.parseInt(numero);
+			Integer.parseInt(numeroComprovante);
+			Integer.parseInt(matriculaAssociacao);
+		} catch (NumberFormatException e) {
+			throw new CampoObrigatorioException(msg);
+		}
+		
+		try {
+			new SimpleDateFormat(Constantes.FORMATO_DATA).parse(oficio);
+			new SimpleDateFormat(Constantes.FORMATO_DATA).parse(entrada);
+		} catch (ParseException | NullPointerException e) {
+			throw new CampoObrigatorioException(msg);
+		}
+		
+		
+	}
 
 	private void validarLancamentoInformacoesAtualizacao(String nome, String entrada, String numero, String oficio)  throws CampoObrigatorioException {
 		
@@ -132,5 +176,7 @@ public class AtletaMT {
 		if (nome == null || nome.isEmpty()) throw new CampoObrigatorioException(msg);
 		
 	}
+	
+	
 }
 
