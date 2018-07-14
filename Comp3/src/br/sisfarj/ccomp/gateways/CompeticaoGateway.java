@@ -24,14 +24,15 @@ public class CompeticaoGateway {
 		return rs;
 	}
 
-	public ResultSet buscar(String dataCompeticao, String endereco) throws SQLException {
+	public ResultSet buscar(String dataCompeticao, String endereco) throws SQLException, ParseException {
 		BDConnection bdConnection = new BDConnection(false);
 		
-		System.out.println(new ConsultingQuery("SELECT * FROM comp3.competicao "
-				+ "WHERE endereco = '" + endereco + "' AND dataCompeticao='" + dataCompeticao + "'"));
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
+		
+		Timestamp timestampCompeticao = new Timestamp(simpleDateFormat.parse(dataCompeticao).getTime());
 		
 		ResultSet rs = bdConnection.execute(new ConsultingQuery("SELECT * FROM comp3.competicao "
-				+ "WHERE endereco = '" + endereco + "' AND dataCompeticao='" + dataCompeticao + "'"));
+				+ "WHERE endereco = '" + endereco + "' AND dataCompeticao='" + timestampCompeticao + "'"));
 		return rs;
 	}
 
@@ -77,7 +78,7 @@ public class CompeticaoGateway {
 	}
 
 	public void inserir(ResultSet rs) throws SQLException {
-		rs.updateRow();
+		rs.insertRow();
 		rs.close();
 	}
 	

@@ -16,7 +16,7 @@ public class ResultSetLocalCompeticao extends ResultSetAdapter {
 		colunas.add("endereco");
 		colunas.add("nome");
 		colunas.add("piscina25");
-		colunas.add("piscinas50");
+		colunas.add("piscina50");
 		
 		return colunas;
 	}

@@ -16,6 +16,10 @@ import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
+import br.sisfarj.ccomp.dominio.CompeticaoMT;
+import br.sisfarj.ccomp.dominio.LocalCompeticaoMT;
+import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
+import br.sisfarj.ccomp.dominio.exceptions.CompeticaoJaExisteException;
 import br.sisfarj.ccomp.gateways.CompeticaoGateway;
 import br.sisfarj.ccomp.gateways.LocalCompeticaoGateway;
 import br.sisfarj.ccomp.gateways.exceptions.LocalNaoEncontradoException;
@@ -57,13 +61,16 @@ public class CriarCompeticao extends HttpServlet {
 		try {
 			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
 			
-			if (request.getParameter("passo3") != null) {
+			if (request.getParameter("passo3") != null  || request.getAttribute("passo3") != null) {
 				try {
 					validarPasso3(request);
 					
 					LocalCompeticaoGateway lcg = new LocalCompeticaoGateway();
 					ResultSet rs = lcg.listarTudo();
-					request.setAttribute("dados", rs);
+					LocalCompeticaoMT localCompeticaoMT = new LocalCompeticaoMT(rs);
+					ResultSetAdapter rsa = localCompeticaoMT.listarTudo();
+					
+					request.setAttribute("dados", rsa);
 					request.getSession().setAttribute(NOME_COMPETICAO, request.getParameter("nome"));
 					request.getSession().setAttribute(DATA_COMPETICAO, request.getParameter("dataCompeticao"));
 					
@@ -77,28 +84,38 @@ public class CriarCompeticao extends HttpServlet {
 				}
 			} else if (request.getParameter("passo5") != null) {
 				try {
-					validarPasso5(request);
 					
-					String infoLocal [] = request.getParameter("LocaisDeProva").split("&");
-					String local = infoLocal[0];
-					String tipoPiscina = infoLocal[1];
+					String infoLocal [] = request.getParameter("LocaisDeProva") != null 
+							&& !"".equals(request.getParameter("LocaisDeProva")) ? 
+							request.getParameter("LocaisDeProva").split("&") : null;
+					String local = infoLocal != null ? infoLocal[0] : null;
+					String tipoPiscina = infoLocal != null ? infoLocal[1] : null;
 					
 					CompeticaoGateway competicaoGateway = new CompeticaoGateway();
-					competicaoGateway.inserir(
-						(String) request.getSession().getAttribute(NOME_COMPETICAO),
-						(String) request.getSession().getAttribute(DATA_COMPETICAO),
-						local,
-						tipoPiscina,
-						request.getParameterValues("nomesProva"),
-						request.getParameterValues("classes"),
-						request.getParameterValues("categorias")
+					ResultSet rs = competicaoGateway.buscar(
+							(String) request.getSession().getAttribute(DATA_COMPETICAO),
+							local
+					);
+					CompeticaoMT competicaoMT = new CompeticaoMT(rs);
+					competicaoMT.inserir(
+							(String) request.getSession().getAttribute(NOME_COMPETICAO),
+							(String) request.getSession().getAttribute(DATA_COMPETICAO),
+							local,
+							tipoPiscina,
+							request.getParameterValues("nomesProva"),
+							request.getParameterValues("classes"),
+							request.getParameterValues("categorias")
 					);
 					
 					request.getRequestDispatcher("Menu").forward(request, response);
 					
 				} catch (CampoObrigatorioException e) {
 					request.setAttribute(Constantes.ERRO, e.getMessage());
-					request.getRequestDispatcher("competicao/CriarCompeticao_passo5.jsp").forward(request, response);
+					request.setAttribute("passo3", "passo3");
+					doPost(request, response);
+				} catch (CompeticaoJaExisteException e) {
+					request.setAttribute(Constantes.ERRO, e.getMessage());
+					request.getRequestDispatcher("Menu").forward(request, response);
 				}
 			}
 			
@@ -106,19 +123,9 @@ public class CriarCompeticao extends HttpServlet {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
 			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException | ParseException e) {
+			e.printStackTrace(response.getWriter());
 			response.getWriter().println(e.getMessage());
 		}
-	}
-
-	private void validarPasso5(HttpServletRequest request) throws CampoObrigatorioException {
-		
-		String msg = "Preencha todos os campos.";
-		
-		if (request.getParameter("LocaisDeProva") == null || request.getParameterValues("nomesProva") == null
-				|| request.getParameterValues("classes") == null || request.getParameterValues("categorias") == null)
-			throw new CampoObrigatorioException(msg);
-	
-		
 	}
 
 	private void validarPasso3(HttpServletRequest request) throws CampoObrigatorioException {
