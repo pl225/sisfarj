@@ -30,7 +30,7 @@ public class LocalCompeticaoGateway {
 		
 	}
 
-	public ResultSet listarTudo() throws SQLException, LocalNaoEncontradoException {
+	public ResultSet listarTudo() throws SQLException{
 		
 		BDConnection bdConnection = new BDConnection(false);
 		

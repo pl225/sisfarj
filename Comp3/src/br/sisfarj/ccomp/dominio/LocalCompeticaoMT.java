@@ -27,7 +27,7 @@ public class LocalCompeticaoMT {
 		this.rs.updateString("PISCINA25", String.valueOf(piscina25));
 		this.rs.updateString("PISCINA50", String.valueOf(piscina50));
 		
-		new LocalCompeticaoGateway().inserir(this.rs);
+		new LocalCompeticaoGateway().inserir(this.rs); //Oi
 		
 	}
 

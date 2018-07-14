@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
+import br.sisfarj.ccomp.dominio.LocalCompeticaoMT;
+import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
 import br.sisfarj.ccomp.gateways.LocalCompeticaoGateway;
 import br.sisfarj.ccomp.gateways.exceptions.LocalNaoEncontradoException;
 
@@ -40,7 +42,10 @@ public class ListarLocaisDeCompeticao extends HttpServlet {
 			
 			LocalCompeticaoGateway localCompeticaoGateway = new LocalCompeticaoGateway();
 			ResultSet rs = localCompeticaoGateway.listarTudo();
-			request.setAttribute("dados", rs);
+			LocalCompeticaoMT localCompeticaoMT = new LocalCompeticaoMT(rs);
+			ResultSetAdapter rsa = localCompeticaoMT.listarTudo();
+			
+			request.setAttribute("dados", rsa);
 			
 			request.getRequestDispatcher("localCompeticao/ListarLocalCompeticao.jsp").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
