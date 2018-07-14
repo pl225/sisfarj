@@ -16,6 +16,7 @@ public class ResultSetCompeticao extends ResultSetAdapter {
 		colunas.add("endereco");
 		colunas.add("dataCompeticao");
 		colunas.add("nome");
+		colunas.add("tipoPiscina");
 		
 		return colunas;
 	}
