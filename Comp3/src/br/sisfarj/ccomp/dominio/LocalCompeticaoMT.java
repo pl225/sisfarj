@@ -3,9 +3,12 @@ package br.sisfarj.ccomp.dominio;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
+import br.sisfarj.ccomp.dominio.adapter.ResultSetLocalCompeticao;
 import br.sisfarj.ccomp.dominio.exceptions.InformacoesInvalidasException;
 import br.sisfarj.ccomp.gateways.LocalCompeticaoGateway;
 import br.sisfarj.ccomp.gateways.exceptions.LocalJaExisteException;
+import br.sisfarj.ccomp.gateways.exceptions.LocalNaoEncontradoException;
 
 public class LocalCompeticaoMT {
 
@@ -48,6 +51,12 @@ public class LocalCompeticaoMT {
 		} catch (InformacoesInvalidasException | SQLException | LocalJaExisteException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+
+	public ResultSetAdapter listarTudo() throws LocalNaoEncontradoException, SQLException {
+		if (!rs.next()) throw new LocalNaoEncontradoException("Nenhum local de competi��o encontrado");
+		rs.beforeFirst();
+		return new ResultSetLocalCompeticao(this.rs);
 	}
 
 	

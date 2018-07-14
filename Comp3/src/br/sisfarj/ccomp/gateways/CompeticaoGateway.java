@@ -16,24 +16,22 @@ import br.sisfarj.ccomp.gateways.exceptions.CompeticaoNaoEncontradaException;
 
 public class CompeticaoGateway {
 
-	public ResultSet listarTodas() throws SQLException, NaoHaCompeticaoException {
+	public ResultSet listarTodas() throws SQLException {
 		BDConnection bdConnection = new BDConnection(false);
 		
-		ResultSet rs = bdConnection.execute(new ConsultingQuery("SELECT nome, dataCompeticao, endereco FROM comp3.competicao"));
+		ResultSet rs = bdConnection.execute(new ConsultingQuery("SELECT * FROM comp3.competicao"));
 		
-		if (!rs.next()) throw new NaoHaCompeticaoException();
-		rs.beforeFirst();
 		return rs;
 	}
 
-	public ResultSet buscar(String dataCompeticao, String endereco) throws SQLException, CompeticaoNaoEncontradaException, ParseException {
+	public ResultSet buscar(String dataCompeticao, String endereco) throws SQLException {
 		BDConnection bdConnection = new BDConnection(false);
+		
+		System.out.println(new ConsultingQuery("SELECT * FROM comp3.competicao "
+				+ "WHERE endereco = '" + endereco + "' AND dataCompeticao='" + dataCompeticao + "'"));
 		
 		ResultSet rs = bdConnection.execute(new ConsultingQuery("SELECT * FROM comp3.competicao "
 				+ "WHERE endereco = '" + endereco + "' AND dataCompeticao='" + dataCompeticao + "'"));
-		
-		if (!rs.next()) throw new CompeticaoNaoEncontradaException();
-		rs.beforeFirst();
 		return rs;
 	}
 
@@ -76,6 +74,16 @@ public class CompeticaoGateway {
 				for (String categoria : categorias)
 					provaGateway.inserir(dataCompeticao, endereco, nomeProva, classe, categoria);
 		
+	}
+
+	public void inserir(ResultSet rs) throws SQLException {
+		rs.updateRow();
+		rs.close();
+	}
+	
+	public void atualizar(ResultSet rs) throws SQLException {
+		rs.updateRow();
+		rs.close();
 	}
 
 }

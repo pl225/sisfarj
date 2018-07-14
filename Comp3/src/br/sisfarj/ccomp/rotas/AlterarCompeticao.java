@@ -15,6 +15,9 @@ import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
+import br.sisfarj.ccomp.dominio.CompeticaoMT;
+import br.sisfarj.ccomp.dominio.LocalCompeticaoMT;
+import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaCompeticaoException;
 import br.sisfarj.ccomp.gateways.AssociacaoGateway;
 import br.sisfarj.ccomp.gateways.CompeticaoGateway;
@@ -44,17 +47,29 @@ public class AlterarCompeticao extends HttpServlet {
 		try {
 			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
 			CompeticaoGateway competicaoGateway = new CompeticaoGateway();
+			CompeticaoMT competicaoMT;
 			ResultSet rs;
 			
 			if (request.getParameter("dataCompeticao") != null && request.getParameter("endereco") != null) {
+				
 				rs = competicaoGateway.buscar(request.getParameter("dataCompeticao"), request.getParameter("endereco"));
-				request.setAttribute("dados", rs);
+				competicaoMT = new CompeticaoMT(rs);
+				ResultSetAdapter rsa = competicaoMT.getCompeticao(request.getParameter("dataCompeticao"), request.getParameter("endereco"));
+				
+				
 				ResultSet locaisCompeticaoRs = new LocalCompeticaoGateway().listarTudo();
-				request.setAttribute("locaisCompeticao", locaisCompeticaoRs);
+				LocalCompeticaoMT localCompeticaoMT = new LocalCompeticaoMT(locaisCompeticaoRs);
+				ResultSetAdapter locaisCompeticaoRsa = localCompeticaoMT.listarTudo();
+				
+				request.setAttribute("dados", rsa);
+				request.setAttribute("locaisCompeticao", locaisCompeticaoRsa);
 				request.getRequestDispatcher("competicao/EditarCompeticao.jsp").forward(request, response);
 			} else {
+				
 				rs = competicaoGateway.listarTodas();
-				request.setAttribute("dados", rs);
+				competicaoMT  = new CompeticaoMT(rs);
+				ResultSetAdapter rsa = competicaoMT.listarTodas();
+				request.setAttribute("dados", rsa);
 				request.getRequestDispatcher("competicao/AlterarCompeticao.jsp").forward(request, response);	
 			}
 			
@@ -75,34 +90,35 @@ public class AlterarCompeticao extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
-			validarLancamentoInformacoes(request);
 			
 			CompeticaoGateway competicaoGateway = new CompeticaoGateway();
-			competicaoGateway.alterar(
+			
+			ResultSet rs = competicaoGateway.buscar(request.getParameter("dataCompeticaoAtual"), 
+					request.getParameter("endereco"));
+			
+			CompeticaoMT competicaoMT = new CompeticaoMT(rs);
+			
+			rs = competicaoMT.alterar(
 					request.getParameter("dataCompeticao"), 
 					request.getParameter("localCompeticao"),
 					request.getParameter("dataCompeticaoAtual"),
 					request.getParameter("endereco")
 			);
 			
+			competicaoGateway.atualizar(rs);
+			
 			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
-		} catch (CampoObrigatorioException e) {
+		} catch (CampoObrigatorioException | CompeticaoNaoEncontradaException e) {
+			System.out.println(e);
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			doGet(request, response);
 		} catch (ParseException | SQLException e) {
+			System.out.println(e);
 			response.getWriter().println(e.getMessage());
 		}
-	}
-
-	private void validarLancamentoInformacoes(HttpServletRequest request) throws CampoObrigatorioException {
-		String msg = "Preencha todos os campos!";
-		
-		if (request.getParameter("dataCompeticao") == null) throw new CampoObrigatorioException(msg);
-		if (request.getParameter("localCompeticao") == null || "".equals(request.getParameter("localCompeticao"))) throw new CampoObrigatorioException(msg);
-		
 	}
 
 }

@@ -8,12 +8,11 @@
 </head>
 <body>
 
-	<%@ page import = "java.sql.ResultSet" %>
+	<%@ page import = "br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter" %>
 
 	<%
-		ResultSet rs = (ResultSet) request.getAttribute("dados");
-		rs.next();
-		ResultSet locaisCompeticaoRs = (ResultSet) request.getAttribute("locaisCompeticao");
+		ResultSetAdapter rs = (ResultSetAdapter) request.getAttribute("dados");
+		ResultSetAdapter locaisCompeticaoRs = (ResultSetAdapter) request.getAttribute("locaisCompeticao");
 	%>
 
 	<h2>Edite as informações da Competição <%= rs.getString("nome") %></h2>

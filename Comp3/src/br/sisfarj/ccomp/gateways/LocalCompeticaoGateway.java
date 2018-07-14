@@ -35,8 +35,6 @@ public class LocalCompeticaoGateway {
 		BDConnection bdConnection = new BDConnection(false);
 		
 		ResultSet rs = bdConnection.execute(new ConsultingQuery("SELECT * FROM comp3.LocalCompeticao"));
-		if (!rs.next()) throw new LocalNaoEncontradoException("Nenhum local de competi��o encontrado");
-		rs.beforeFirst();
 		return rs;
 	}
 	
