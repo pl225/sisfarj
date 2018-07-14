@@ -43,7 +43,7 @@ public class CadastrarAtleta extends HttpServlet {
 			request.getRequestDispatcher("atleta/CadastrarAtleta.jsp").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		}
     }
     
@@ -64,7 +64,7 @@ public class CadastrarAtleta extends HttpServlet {
 					request.getParameter("associacao"),
 					request.getParameter("comprovante"));
 		
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
 			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
@@ -37,13 +38,14 @@ public class IdentificarUsuario extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
-		} catch (UsuarioNaoIdentificadoException e) {
-			request.getSession().invalidate();
-			request.getRequestDispatcher("IdentificarUsuario.jsp").forward(request, response);
-		}
+		
+		if (request.getParameter(Constantes.PAGINA) == null) {
+			response.sendRedirect("Menu");
+		} else {
+			request.setAttribute(Constantes.PAGINA, request.getParameter(Constantes.PAGINA));
+			request.getRequestDispatcher("WEB-INF/IdentificarUsuario.jsp").forward(request, response);
+		}			
+		
 	}
 
 	/**
@@ -66,7 +68,7 @@ public class IdentificarUsuario extends HttpServlet {
 			
 			if (associacaoMT.temAcesso(matricula)) {
 				request.getSession().setAttribute("matricula", associacaoMT.getMatricula(matricula));
-				request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+				response.sendRedirect((String) request.getParameter(Constantes.PAGINA));
 			} else {
 				doGet(request, response);
 			}

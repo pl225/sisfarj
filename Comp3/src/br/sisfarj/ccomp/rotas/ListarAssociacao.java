@@ -43,12 +43,12 @@ public class ListarAssociacao extends HttpServlet {
 			
 		}catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException e) {
 			response.getWriter().println(e.getMessage());
 		} catch (NaoHaAssociacaoException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		}
 	}
 

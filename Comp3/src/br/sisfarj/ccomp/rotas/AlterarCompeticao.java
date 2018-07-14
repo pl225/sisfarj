@@ -75,7 +75,7 @@ public class AlterarCompeticao extends HttpServlet {
 			
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException | ParseException e) {
 			response.getWriter().println(e.getMessage());
 		} catch (NaoHaCompeticaoException | CompeticaoNaoEncontradaException | LocalNaoEncontradoException e) {
@@ -107,16 +107,14 @@ public class AlterarCompeticao extends HttpServlet {
 			
 			competicaoGateway.atualizar(rs);
 			
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (CampoObrigatorioException | CompeticaoNaoEncontradaException e) {
-			System.out.println(e);
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			doGet(request, response);
 		} catch (ParseException | SQLException e) {
-			System.out.println(e);
 			response.getWriter().println(e.getMessage());
 		}
 	}

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class BDConnection {
-	private static final String URL = "jdbc:derby:C:\\Users\\email\\sisfarj;create=true";
+	private static final String URL = "jdbc:derby:C:\\Users\\mathe\\sisfarj;create=true";
 	private static final String USER = "root";
 	private static final String PASSWORD = "root";
 	
@@ -62,7 +62,7 @@ public class BDConnection {
 	public ResultSet execute (ConsultingQuery cq) throws SQLException {
 		if (this.rs != null) this.rs.close();
 		if (this.stmt != null) this.stmt.close();
-		this.stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		this.stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 		this.rs = this.stmt.executeQuery(cq.toString());
 		return this.rs;
 	}

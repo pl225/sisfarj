@@ -43,7 +43,7 @@ public class FiliarAssociacao extends HttpServlet {
 			request.getRequestDispatcher("associacao/FiliarAssociacao.jsp").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		}
 		
 	}
@@ -69,10 +69,10 @@ public class FiliarAssociacao extends HttpServlet {
 			
 			associacaoGateway.inserir(rs);
 			
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (CampoObrigatorioException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			doGet(request, response);

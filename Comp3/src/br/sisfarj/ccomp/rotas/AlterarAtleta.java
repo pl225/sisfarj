@@ -59,9 +59,9 @@ public class AlterarAtleta extends HttpServlet {
 			}
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usu·rio n„o identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException e) {
-			response.getWriter().println(e.getMessage() + "jjj");
+			response.getWriter().println(e.getMessage());
 		} catch (AtletaNaoEncontradoException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
@@ -91,10 +91,10 @@ public class AlterarAtleta extends HttpServlet {
 				request.getParameter("oficio")
 			);
 			
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usu√°rio n√£o identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (CampoObrigatorioException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			doGet(request, response);

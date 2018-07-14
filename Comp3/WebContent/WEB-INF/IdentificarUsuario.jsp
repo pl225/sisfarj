@@ -12,7 +12,7 @@
 
 	<jsp:include page="/WEB-INF/Erro.jsp"></jsp:include>
 
-<form method="post" action="IdentificarUsuario">
+<form method="post" action="IdentificarUsuario?pagina=<%= request.getAttribute("pagina") %>">
 	<label for="matricula">Matrícula</label>
 	<input type="text" name="matricula">
 	

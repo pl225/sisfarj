@@ -45,12 +45,12 @@ public class ListarLocaisDeCompeticao extends HttpServlet {
 			request.getRequestDispatcher("localCompeticao/ListarLocalCompeticao.jsp").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException e) {
 			response.getWriter().println(e.getMessage());
 		} catch (LocalNaoEncontradoException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		}
 	}
 

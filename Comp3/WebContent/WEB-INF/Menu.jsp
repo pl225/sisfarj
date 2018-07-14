@@ -11,18 +11,18 @@
 	<jsp:include page="/WEB-INF/Erro.jsp"></jsp:include>
 
 	<ul>
-  		<li><a href="FiliarAssociacao">1- Filiar Associação</a></li>
-  		<li><a href="AlterarAssociacao">2- Alterar Associação</a></li>
-  		<li><a href="ListarLocaisDeCompeticao">3- Listar Locais de Competição</a></li>
-		<li><a href="CadastrarAtleta">4- Cadastrar Atleta</a></li>
-		<li><a href="AlterarAtleta">5- Alterar Atleta</a></li>
-		<li><a href="TransferirAtleta">6- Transferir Atleta</a></li>
-		<li><a href="IncluirLocalCompeticao">10- Incluir Local de Competição</a></li>
-		<li><a href="AlterarLocalCompeticao">11- Alterar Local de Competição</a></li>
-		<li><a href="ListarAssociacao">12- Listar Associações</a></li>
-		<li><a href="CriarCompeticao">13- Criar Competição</a></li>
-		<li><a href="AlterarCompeticao">14- Alterar Competição</a></li>
-		<li><a href="ListarCompeticao">16- Listar Competição</a></li>
+  		<li><a href="IdentificarUsuario?pagina=FiliarAssociacao">1- Filiar Associação</a></li>
+  		<li><a href="IdentificarUsuario?pagina=AlterarAssociacao">2- Alterar Associação</a></li>
+  		<li><a href="IdentificarUsuario?pagina=ListarLocaisDeCompeticao">3- Listar Locais de Competição</a></li>
+		<li><a href="IdentificarUsuario?pagina=CadastrarAtleta">4- Cadastrar Atleta</a></li>
+		<li><a href="IdentificarUsuario?pagina=AlterarAtleta">5- Alterar Atleta</a></li>
+		<li><a href="IdentificarUsuario?pagina=TransferirAtleta">6- Transferir Atleta</a></li>
+		<li><a href="IdentificarUsuario?pagina=IncluirLocalCompeticao">10- Incluir Local de Competição</a></li>
+		<li><a href="IdentificarUsuario?pagina=AlterarLocalCompeticao">11- Alterar Local de Competição</a></li>
+		<li><a href="IdentificarUsuario?pagina=ListarAssociacao">12- Listar Associações</a></li>
+		<li><a href="IdentificarUsuario?pagina=CriarCompeticao">13- Criar Competição</a></li>
+		<li><a href="IdentificarUsuario?pagina=AlterarCompeticao">14- Alterar Competição</a></li>
+		<li><a href="IdentificarUsuario?pagina=ListarCompeticao">16- Listar Competição</a></li>
 	</ul>
 
 </body>

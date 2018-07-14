@@ -77,12 +77,12 @@ public class ListarCompeticao extends HttpServlet {
 			
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException | ParseException e) {
 			response.getWriter().println(e.getMessage());
 		} catch (NaoHaCompeticaoException | CompeticaoNaoEncontradaException | ProvaSemAtletaException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} 
 	}
 

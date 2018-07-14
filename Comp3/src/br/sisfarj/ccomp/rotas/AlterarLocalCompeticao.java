@@ -57,11 +57,10 @@ public class AlterarLocalCompeticao extends HttpServlet {
 			}
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException | LocalNaoEncontradoException e) {
 			response.getWriter().println(e.getMessage());
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
-			e.printStackTrace();
+			request.getRequestDispatcher("Menu.jsp").forward(request, response);
 		}
 		}
 
@@ -80,7 +79,7 @@ public class AlterarLocalCompeticao extends HttpServlet {
 			
 			lcg.atualizar(request.getParameter("endereco"),request.getParameter("nome"), request.getParameter("novoEndereco"), p25, p50);
 			
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 			
 		} catch (CampoObrigatorioException e) {
 			// TODO Auto-generated catch block

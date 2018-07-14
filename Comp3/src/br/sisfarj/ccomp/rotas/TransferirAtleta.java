@@ -60,14 +60,13 @@ public class TransferirAtleta extends HttpServlet {
 			}
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usu√°rio n√£o identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException e) {
-			System.out.println("N aguento mais");
 			response.getWriter().println(e.getMessage());
 			
 		} catch (AtletaNaoEncontradoException | NaoHaAtletaException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		}
 		
 	}
@@ -93,7 +92,7 @@ public class TransferirAtleta extends HttpServlet {
 			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usu·rio n„o identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (CampoObrigatorioException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			doGet(request, response);

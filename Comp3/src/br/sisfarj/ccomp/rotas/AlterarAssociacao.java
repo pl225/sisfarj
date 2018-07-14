@@ -66,7 +66,7 @@ public class AlterarAssociacao extends HttpServlet {
 			}
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException e) {
 			response.getWriter().println(e.getMessage());
 		} catch (NaoHaAssociacaoException | AssociacaoNaoEncontradaException e) {
@@ -98,10 +98,10 @@ public class AlterarAssociacao extends HttpServlet {
 			
 			associacaoGateway.atualizar(rs);
 			
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
-			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
+			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (CampoObrigatorioException | AssociacaoNaoEncontradaException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			doGet(request, response);
