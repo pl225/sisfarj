@@ -1,6 +1,7 @@
 package br.sisfarj.ccomp.rotas;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,6 +16,8 @@ import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
+import br.sisfarj.ccomp.dominio.AssociacaoMT;
+import br.sisfarj.ccomp.dominio.AtletaMT;
 import br.sisfarj.ccomp.gateways.AtletaGateway;
 import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
 
@@ -53,17 +56,21 @@ public class CadastrarAtleta extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
-			validarLancamentoInformacoes(request);
-			
+						
 			AtletaGateway atletaGateway = new AtletaGateway();
-			atletaGateway.inserir(request.getParameter("numero"), 
+			ResultSet rs = atletaGateway.buscar();
+			AtletaMT atletaMT = new AtletaMT(rs);
+			
+			rs = atletaMT.inserir(request.getParameter("numero"), 
 					request.getParameter("oficio"), 
 					request.getParameter("nome"),
 					request.getParameter("nascimento"),
 					request.getParameter("entrada"),
 					request.getParameter("associacao"),
 					request.getParameter("comprovante"));
-		
+			
+			atletaGateway.inserir(rs);
+					
 			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
@@ -73,32 +80,8 @@ public class CadastrarAtleta extends HttpServlet {
 			doGet(request, response);
 		} catch (SQLException | ParseException e) {
 			response.getWriter().println(e.getMessage());
-		} catch (AssociacaoNaoEncontradaException e) {
-			request.setAttribute(Constantes.ERRO, e.getMessage());
-			request.getRequestDispatcher("WEB-INF/Menu.jsp").forward(request, response);
 		}
 	
 	}
 	
-	private void validarLancamentoInformacoes(HttpServletRequest request) throws CampoObrigatorioException {
-		String msg = "Preencha todos os campos!";
-		try {
-			Integer.parseInt(request.getParameter("numero"));
-			Integer.parseInt(request.getParameter("comprovante"));
-			Integer.parseInt(request.getParameter("associacao"));
-		} catch (NumberFormatException e) {
-			throw new CampoObrigatorioException(msg);
-		}
-		
-		try {
-			new SimpleDateFormat(Constantes.FORMATO_DATA).parse(request.getParameter("oficio"));
-			new SimpleDateFormat(Constantes.FORMATO_DATA).parse(request.getParameter("entrada"));
-			new SimpleDateFormat(Constantes.FORMATO_DATA).parse(request.getParameter("nascimento"));
-		} catch (ParseException | NullPointerException e) {
-			throw new CampoObrigatorioException(msg);
-		}
-		
-		if (request.getParameter("nome") == null) throw new CampoObrigatorioException(msg);
-				
-	}
 }
