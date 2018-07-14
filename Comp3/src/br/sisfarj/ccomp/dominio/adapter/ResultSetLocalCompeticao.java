@@ -12,9 +12,9 @@ public class ResultSetLocalCompeticao extends ResultSetAdapter {
 	@Override
 	protected ArrayList<String> colunasPermitidas() {
 		ArrayList<String> colunas = new ArrayList<>();
-		
-		colunas.add("endereco");
+
 		colunas.add("nome");
+		colunas.add("endereco");
 		colunas.add("piscina25");
 		colunas.add("piscina50");
 		

@@ -6,7 +6,10 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import javax.servlet.http.HttpServletRequest;
+
 import br.sisfarj.ccomp.aplicacao.Constantes;
+import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.bd.BDConnection;
 import br.sisfarj.ccomp.bd.ConsultingQuery;
 import br.sisfarj.ccomp.bd.CreatingQuery;
@@ -29,6 +32,18 @@ public class LocalCompeticaoGateway {
 		
 		
 	}
+	
+	private void validarLancamentoInformacoes(HttpServletRequest request) throws CampoObrigatorioException {
+		// TODO Auto-generated method stub
+		String msg = "Preencha todos os campos!";
+		String msgPiscina = "Escolha pelo menos um tipo de piscina!";
+		
+		if (request.getParameter("nome") == null) throw new CampoObrigatorioException(msg);
+		if (request.getParameter("endereco") == null) throw new CampoObrigatorioException(msg);
+		if (request.getParameter("piscina25") == null && request.getParameter("piscina50") == null) throw new CampoObrigatorioException(msgPiscina);
+		
+		
+	}
 
 	public ResultSet listarTudo() throws SQLException, LocalNaoEncontradoException {
 		
@@ -48,8 +63,6 @@ public class LocalCompeticaoGateway {
 						+ "WHERE endereco = '" + endereco + "'")
 		);
 		
-		if (!rs.next()) throw new LocalNaoEncontradoException(endereco);
-		rs.beforeFirst();
 		return rs;
 		
 	}
@@ -76,6 +89,11 @@ public class LocalCompeticaoGateway {
 		rs.insertRow();
 		rs.close();
 	}
+	
+	public void atualizar(ResultSet rs) throws SQLException {
+		rs.updateRow();
+		rs.close();
+	}
 
 	public ResultSet criar(String endereco) throws SQLException, LocalJaExisteException {
 		BDConnection bdConnection = new BDConnection(false);
@@ -88,6 +106,16 @@ public class LocalCompeticaoGateway {
 				"SELECT * FROM comp3.localcompeticao WHERE 1 = 2"
 			));
 		}
+	}
+
+	public ResultSet buscar() throws SQLException {
+		BDConnection bdConnection = new BDConnection(false);
+		
+		ResultSet rs =  bdConnection.execute(new CreatingQuery(
+			"SELECT * FROM comp3.localCompeticao WHERE 1 = 2"
+		));
+		rs.moveToInsertRow();
+		return rs;
 	}
 
 }

@@ -80,7 +80,7 @@ public class ListarCompeticao extends HttpServlet {
 			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException | ParseException e) {
 			response.getWriter().println(e.getMessage());
-		} catch (NaoHaCompeticaoException | CompeticaoNaoEncontradaException | ProvaSemAtletaException e) {
+		} catch (CompeticaoNaoEncontradaException | ProvaSemAtletaException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			request.getRequestDispatcher("Menu").forward(request, response);
 		} 
