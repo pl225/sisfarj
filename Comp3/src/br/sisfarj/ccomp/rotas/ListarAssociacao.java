@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
+import br.sisfarj.ccomp.dominio.AssociacaoMT;
+import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAssociacaoException;
 import br.sisfarj.ccomp.gateways.AssociacaoGateway;
 
@@ -35,10 +37,14 @@ public class ListarAssociacao extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
+			
 			AssociacaoGateway associacaoGateway = new AssociacaoGateway();
 			ResultSet rs = associacaoGateway.listarPorNome();
 			
-			request.setAttribute("dados", rs);
+			AssociacaoMT associacaoMT = new AssociacaoMT(rs);
+			ResultSetAdapter rsa = associacaoMT.listarTodas();
+			
+			request.setAttribute("dados", rsa);
 			request.getRequestDispatcher("associacao/ListarAssociacao.jsp").forward(request, response);
 			
 		}catch (UsuarioNaoIdentificadoException e) {

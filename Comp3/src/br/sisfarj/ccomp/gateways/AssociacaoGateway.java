@@ -72,8 +72,6 @@ public class AssociacaoGateway {
 				
 		ResultSet rs = bdConnection.execute(new ConsultingQuery("SELECT matriculaAssociacao, nome FROM comp3.associacao ORDER BY nome"));
 		
-		if (!rs.next()) throw new NaoHaAssociacaoException();
-		rs.beforeFirst();
 		return rs;
 	}
 	
