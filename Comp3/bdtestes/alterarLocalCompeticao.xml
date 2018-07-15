@@ -2,8 +2,8 @@
 
 <dataset>
 	<localCompeticao 
-		NOME = "Novo nome para teste" 
-		ENDERECO = "Avenida R, 4" 
+		NOME = "Nome Local Alterado" 
+		ENDERECO = "Barra" 
 		PISCINA25 = "T" 
 		PISCINA50 = "T"
 	/>	

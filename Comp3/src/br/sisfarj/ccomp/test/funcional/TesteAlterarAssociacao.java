@@ -20,7 +20,7 @@ public class TesteAlterarAssociacao extends TesteFuncional {
 	}
 	
 	@Test
-	public void filiarAssociacaoValida () throws Exception {
+	public void testFiliarAssociacaoValida () throws Exception {
 		
 		
 		AssociacaoGateway associacaoGateway = new AssociacaoGateway();

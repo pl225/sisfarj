@@ -22,21 +22,23 @@ public class TesteAlterarLocalCompeticao extends TesteFuncional{
 	@Test
 	public void testAlterarLocalCompeticao () throws Exception {
 		
+		//Teste de Alteração do Local de Competição - Testar se dá certo!
+		
 		LocalCompeticaoGateway localCompeticaoGateway = new LocalCompeticaoGateway();
 		ResultSet rs = localCompeticaoGateway.buscar();
 		LocalCompeticaoMT localCompeticaoMT = new LocalCompeticaoMT(rs);
 		
-		rs = localCompeticaoMT.alterar("Nome Local Alterado", "Avenida R, 4", "T","F");
+		rs = localCompeticaoMT.alterar("Nome Local Alterado", "Barra", "T","T");
 				
 		localCompeticaoGateway.atualizar(rs);
 		
 		IDataSet expectedDataSet = new FlatXmlDataSetBuilder().build(new File("bdtestes/alterarLocalCompeticao.xml"));
         ITable expectedTable = expectedDataSet.getTable("associacao");
-        
+    
         Assertion.assertEqualsByQuery(expectedTable, getConnection(), "associacao",
-        		"SELECT * FROM COMP3.LOCALCOMPETICAO WHERE ENDERECO = ''"
-        		+ "ORDER BY ENDERECO DESC"
-        		+ " FETCH FIRST 1 ROWS ONLY", new String[]{"ENDERECO"});
+        		"SELECT * FROM COMP3.LOCALCOMPETICAO WHERE ENDERECO = 'Barra'", new String[]{""});
+        		//+ "ORDER BY ENDERECO DESC"
+        		//+ " FETCH FIRST 1 ROWS ONLY", new String[]{""});
 		
 	}
 	

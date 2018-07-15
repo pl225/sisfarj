@@ -1,6 +1,7 @@
 package br.sisfarj.ccomp.test.funcional;
 
 import java.io.File;
+import java.sql.ResultSet;
 
 import org.dbunit.Assertion;
 import org.dbunit.dataset.IDataSet;
@@ -9,6 +10,9 @@ import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.Test;
 
+import br.sisfarj.ccomp.dominio.AssociacaoMT;
+import br.sisfarj.ccomp.dominio.AtletaMT;
+import br.sisfarj.ccomp.gateways.AssociacaoGateway;
 import br.sisfarj.ccomp.gateways.AtletaGateway;
 
 public class TesteCadastrarAtleta extends TesteFuncional {
@@ -18,10 +22,13 @@ public class TesteCadastrarAtleta extends TesteFuncional {
 	}
 	
 	@Test
-	public void testIncluirLocalCompeticao () throws Exception {
+	public void testCadastrarAtleta () throws Exception {
 		
 		AtletaGateway atletaGateway = new AtletaGateway();
-		atletaGateway.inserir(
+		ResultSet rs = atletaGateway.buscar();
+		AtletaMT atletaMT = new AtletaMT(rs);
+		
+		rs = atletaMT.inserir(
 			"47563",
 			"2017-05-01 09:35:00.0",
 			"Victor Diniz",
@@ -31,14 +38,18 @@ public class TesteCadastrarAtleta extends TesteFuncional {
 			"435241"
 		);
 		
+		atletaGateway.inserir(rs);
+		
 		IDataSet dadosSetBanco = getConnection().createDataSet();
 		ITable tabelaAtleta = dadosSetBanco.getTable("Atleta");
-		ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(tabelaAtleta, new String[]{"MATRICULAASSOCIACAO"});
+		ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(tabelaAtleta, new String[]{"MATRICULAATLETA"});
 		
 		IDataSet expectedDataSet = new FlatXmlDataSetBuilder().build(new File("bdtestes/cadastrarAtleta.xml"));
         ITable expectedTable = expectedDataSet.getTable("atleta");
                 
-        Assertion.assertEquals(expectedTable, filteredTable);
+        Assertion.assertEqualsByQuery(expectedTable, getConnection(), "atleta",
+        		"SELECT * FROM COMP3.ATLETA ORDER BY MATRICULAATLETA DESC"
+        		+ " FETCH FIRST 1 ROWS ONLY", new String[]{"MATRICULAATLETA"});
 		
 	}
 

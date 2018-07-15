@@ -20,15 +20,15 @@ public class TesteFiliarAssociacao extends TesteFuncional {
 	}
 	
 	@Test
-	public void filiarAssociacaoValida () throws Exception {
+	public void testFiliarAssociacaoValida () throws Exception {
 		
 		AssociacaoGateway associacaoGateway = new AssociacaoGateway();
 		ResultSet rs = associacaoGateway.buscar();
 		AssociacaoMT associacaoMT = new AssociacaoMT(rs);
 		
 		rs = associacaoMT.inserir(
-				"54732", 
-				"2018-08-01", 
+				"54732",
+				"2018-08-01",
 				"Primeiro teste",
 				"PT",
 				"Rua teste, 1",
