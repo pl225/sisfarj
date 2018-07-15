@@ -20,26 +20,25 @@ import br.sisfarj.ccomp.dominio.ProvaMT;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAtletaException;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaCompeticaoException;
+import br.sisfarj.ccomp.dominio.exceptions.NaoHaPontuacaoException;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaProvaException;
 import br.sisfarj.ccomp.gateways.AtletaProvaGateway;
 import br.sisfarj.ccomp.gateways.CompeticaoGateway;
 import br.sisfarj.ccomp.gateways.CompeticaoProvaGateway;
-import br.sisfarj.ccomp.gateways.LocalCompeticaoGateway;
 import br.sisfarj.ccomp.gateways.exceptions.CompeticaoNaoEncontradaException;
-import br.sisfarj.ccomp.gateways.exceptions.LocalNaoEncontradoException;
 import br.sisfarj.ccomp.gateways.exceptions.ProvaSemAtletaException;
 
 /**
- * Servlet implementation class ListarCompeticao
+ * Servlet implementation class ListarPontuacaoCompeticao
  */
-@WebServlet("/ListarCompeticao")
-public class ListarCompeticao extends HttpServlet {
+@WebServlet("/ListarPontuacaoCompeticao")
+public class ListarPontuacaoCompeticao extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListarCompeticao() {
+    public ListarPontuacaoCompeticao() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -58,17 +57,17 @@ public class ListarCompeticao extends HttpServlet {
 					request.getParameter("categoria") != null) {
 				
 				
-				rs = new AtletaProvaGateway().buscarAtletasProva(request.getParameter("nome"),
-						                                         request.getParameter("classe"), 
-						                                         request.getParameter("categoria"), 
-						                                         request.getParameter("dataCompeticao"), 
-						                                         request.getParameter("endereco"));
+				rs = new AtletaProvaGateway().buscarAtletasProvaPontuacao(request.getParameter("nome"),
+						                                         		  request.getParameter("classe"), 
+						                                         		  request.getParameter("categoria"), 
+						                                         		  request.getParameter("dataCompeticao"), 
+						                                         		  request.getParameter("endereco"));
 				
 				AtletaProvaMT atletaProvaMT= new AtletaProvaMT(rs);
 				ResultSetAdapter rsA = atletaProvaMT.listarTudo();
 				
 				request.setAttribute("dados", rs);
-				request.getRequestDispatcher("competicao/ListarCompeticaoProva.jsp").forward(request, response);
+				request.getRequestDispatcher("competicao/ListarPontuacaoCompeticaoProva.jsp").forward(request, response);
 				
 			} else if (request.getParameter("dataCompeticao") != null && request.getParameter("endereco") != null) {
 				
@@ -76,15 +75,13 @@ public class ListarCompeticao extends HttpServlet {
 				CompeticaoMT competicaoMT = new CompeticaoMT(rs);
 				ResultSetAdapter rsa = competicaoMT.getCompeticao(request.getParameter("dataCompeticao"), request.getParameter("endereco"));
 				
-				//rsProvas = cpg.getProvasPelaCompeticao(request.getParameter("dataCompeticao"), request.getParameter("endereco"));
-				
 				rsProvas = competicaoMT.getProvas(request.getParameter("dataCompeticao"), request.getParameter("endereco"));
 				ProvaMT provaMT = new ProvaMT(rsProvas);
 				ResultSetAdapter rsaProvas = provaMT.listarTudo();
 				
 				request.setAttribute("dados", rsaProvas);
 				request.setAttribute("dadosCompeticao", rsa);
-				request.getRequestDispatcher("competicao/ListarCompeticao.jsp").forward(request, response);
+				request.getRequestDispatcher("competicao/ListarPontuacaoCompeticao.jsp").forward(request, response);
 			
 			} else {
 				rs = competicaoGateway.listarTodas();
@@ -92,7 +89,7 @@ public class ListarCompeticao extends HttpServlet {
 				ResultSetAdapter rsa = competicaoMT.listarTodas();
 				
 				request.setAttribute("dados", rsa);
-				request.getRequestDispatcher("competicao/ListarCompeticoes.jsp").forward(request, response);	
+				request.getRequestDispatcher("competicao/ListarPontuacaoCompeticoes.jsp").forward(request, response);	
 			}
 			
 			
@@ -100,14 +97,14 @@ public class ListarCompeticao extends HttpServlet {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
 			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException | ParseException e) {
-			response.getWriter().println(e.getMessage());
+			request.setAttribute(Constantes.ERRO, e.getMessage());
+			request.getRequestDispatcher("Menu").forward(request, response);
 
 		} catch (CompeticaoNaoEncontradaException | ProvaSemAtletaException | NaoHaCompeticaoException | NaoHaProvaException | NaoHaAtletaException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
-			e.printStackTrace();
 			request.getRequestDispatcher("Menu").forward(request, response);
 		} 
-		
+
 	}
 
 	/**

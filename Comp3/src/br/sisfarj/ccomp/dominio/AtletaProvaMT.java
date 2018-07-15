@@ -31,4 +31,10 @@ public class AtletaProvaMT {
 		this.rs.beforeFirst();
 		return new ResultSetAtletaProva(this.rs);
 	}
+	
+	public ResultSetAdapter listarPontuacao() throws SQLException, NaoHaPontuacaoException {
+		if (!this.rs.next()) throw new NaoHaPontuacaoException();
+		this.rs.beforeFirst();
+		return new ResultSetAtletaProva(this.rs);
+	}
 }
