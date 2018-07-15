@@ -124,8 +124,7 @@ public class AssociacaoMT {
 		}
 		
 		if (nome == null || nome.isEmpty()) throw new CampoObrigatorioException(msg);
-		if (sigla == null || sigla.isEmpty()) throw new CampoObrigatorioException(msg);
-		
+		if (sigla == null || sigla.isEmpty()) throw new CampoObrigatorioException(msg);	
 	}
 	
 	public ResultSet atualizar(String matriculaAssociacao, String numeroOficio, String dataOficio, 
@@ -142,7 +141,7 @@ public class AssociacaoMT {
 		this.rs.updateString("SIGLA", sigla);
 		this.rs.updateString("NUMEROOFICIO", numeroOficio);
 		this.rs.updateString("DATAOFICIO", t.toString());
-		this.rs.updateString("TEMACESSO", "T");
+		this.rs.updateString("TEMACESSO", String.valueOf(temAcesso));
 	
 		return this.rs;
 		
