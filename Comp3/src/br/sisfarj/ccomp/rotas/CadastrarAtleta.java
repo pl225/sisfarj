@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +15,6 @@ import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.aplicacao.VerificarIdentificacaoUsuario;
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.aplicacao.exceptions.UsuarioNaoIdentificadoException;
-import br.sisfarj.ccomp.dominio.AssociacaoMT;
 import br.sisfarj.ccomp.dominio.AtletaMT;
 import br.sisfarj.ccomp.gateways.AtletaGateway;
 import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
@@ -75,7 +73,7 @@ public class CadastrarAtleta extends HttpServlet {
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
 			request.getRequestDispatcher("IdentificarUsuario").forward(request, response);
-		} catch (CampoObrigatorioException e) {
+		} catch (CampoObrigatorioException | AssociacaoNaoEncontradaException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			doGet(request, response);
 		} catch (SQLException | ParseException e) {

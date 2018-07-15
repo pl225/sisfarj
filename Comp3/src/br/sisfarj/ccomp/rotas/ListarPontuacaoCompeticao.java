@@ -66,7 +66,7 @@ public class ListarPontuacaoCompeticao extends HttpServlet {
 				AtletaProvaMT atletaProvaMT= new AtletaProvaMT(rs);
 				ResultSetAdapter rsA = atletaProvaMT.listarTudo();
 				
-				request.setAttribute("dados", rs);
+				request.setAttribute("dados", rsA);
 				request.getRequestDispatcher("competicao/ListarPontuacaoCompeticaoProva.jsp").forward(request, response);
 				
 			} else if (request.getParameter("dataCompeticao") != null && request.getParameter("endereco") != null) {

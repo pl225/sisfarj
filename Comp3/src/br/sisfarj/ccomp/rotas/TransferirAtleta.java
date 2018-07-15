@@ -108,15 +108,12 @@ public class TransferirAtleta extends HttpServlet {
 		} catch (UsuarioNaoIdentificadoException e) {
 			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
 			request.getRequestDispatcher("Menu").forward(request, response);
-		} catch (CampoObrigatorioException e) {
+		} catch (CampoObrigatorioException | AssociacaoNaoEncontradaException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			doGet(request, response);
-		} catch (SQLException | ParseException e) {
+		} catch (SQLException | ParseException | AtletaNaoEncontradoException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			request.getRequestDispatcher("Menu").forward(request, response);
-		} catch (AtletaNaoEncontradoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	

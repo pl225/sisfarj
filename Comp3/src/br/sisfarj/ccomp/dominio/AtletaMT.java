@@ -19,6 +19,7 @@ import br.sisfarj.ccomp.dominio.adapter.ResultSetAssociacao;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetAtleta;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAssociacaoException;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAtletaException;
+import br.sisfarj.ccomp.gateways.AssociacaoGateway;
 import br.sisfarj.ccomp.gateways.exceptions.AssociacaoNaoEncontradaException;
 import br.sisfarj.ccomp.gateways.exceptions.AtletaNaoEncontradoException;
 import br.sisfarj.ccomp.gateways.exceptions.PessoaNaoEncontradaException;
@@ -32,9 +33,14 @@ public class AtletaMT {
 	}
 
 	public ResultSet inserir(String numero, String oficio, String nome, String nascimento,
-			String entrada, String associacao, String comprovante) throws SQLException, ParseException, CampoObrigatorioException {
+			String entrada, String associacao, String comprovante) throws SQLException, ParseException, CampoObrigatorioException, AssociacaoNaoEncontradaException {
 		
 		this.validarLancamentoInformacoesInsercao(numero, oficio, nome, nascimento, entrada, associacao, comprovante);
+		
+		AssociacaoGateway associacaoGateway = new AssociacaoGateway();
+		ResultSet rs = associacaoGateway.buscar(associacao);
+		AssociacaoMT associacaoMT = new AssociacaoMT(rs);
+		associacaoMT.getAssociacao(Integer.parseInt(associacao));
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
 		
@@ -114,10 +120,15 @@ public class AtletaMT {
 	}
 	
 	public ResultSet transferir(String matriculaAtleta, String matriculaAssociacao, String numeroPagamento, String entrada,
-			String numero, String oficio) throws SQLException, ParseException, CampoObrigatorioException, AtletaNaoEncontradoException {
+			String numero, String oficio) throws SQLException, ParseException, CampoObrigatorioException, AtletaNaoEncontradoException, NumberFormatException, AssociacaoNaoEncontradaException {
 
 		validarLancamentoInformacoesTransferencia(matriculaAssociacao, numeroPagamento, entrada,
 				numero, oficio);
+		
+		AssociacaoGateway associacaoGateway = new AssociacaoGateway();
+		ResultSet rs = associacaoGateway.buscar(matriculaAssociacao);
+		AssociacaoMT associacaoMT = new AssociacaoMT(rs);
+		associacaoMT.getAssociacao(Integer.parseInt(matriculaAssociacao));
 		
 		getMatricula(Integer.parseInt(matriculaAtleta));		
 		
@@ -135,7 +146,7 @@ public class AtletaMT {
 
 	}
 
-	private void validarLancamentoInformacoesTransferencia(String matriculaAssociacao, String numeroComprovante, String entrada, String numero,
+	public void validarLancamentoInformacoesTransferencia(String matriculaAssociacao, String numeroComprovante, String entrada, String numero,
 			String oficio) throws CampoObrigatorioException {
 		
 		String msg = "Preencha todos os campos!";
@@ -157,7 +168,7 @@ public class AtletaMT {
 		
 	}
 
-	private void validarLancamentoInformacoesAtualizacao(String nome, String entrada, String numero, String oficio)  throws CampoObrigatorioException {
+	public void validarLancamentoInformacoesAtualizacao(String nome, String entrada, String numero, String oficio)  throws CampoObrigatorioException {
 		
 		String msg = "Preencha todos os campos!";
 		try {

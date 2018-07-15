@@ -12,7 +12,7 @@ public abstract class TesteFuncional extends DBTestCase {
 		super(metodo);
 		
 		System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, "org.apache.derby.jdbc.EmbeddedDriver");
-        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, "jdbc:derby:/home/matheus/sisfarj;create=true" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, "jdbc:derby:C:\\Users\\email\\sisfarj;create=true" );
         System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "root");
         System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "root");
         System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_SCHEMA, "comp3");
