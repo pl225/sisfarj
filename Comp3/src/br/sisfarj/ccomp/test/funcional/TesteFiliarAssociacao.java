@@ -1,6 +1,7 @@
 package br.sisfarj.ccomp.test.funcional;
 
 import java.io.File;
+import java.sql.ResultSet;
 
 import org.dbunit.Assertion;
 import org.dbunit.dataset.IDataSet;
@@ -9,6 +10,7 @@ import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.Test;
 
+import br.sisfarj.ccomp.dominio.AssociacaoMT;
 import br.sisfarj.ccomp.gateways.AssociacaoGateway;
 
 public class TesteFiliarAssociacao extends TesteFuncional {
@@ -21,26 +23,28 @@ public class TesteFiliarAssociacao extends TesteFuncional {
 	public void filiarAssociacaoValida () throws Exception {
 		
 		AssociacaoGateway associacaoGateway = new AssociacaoGateway();
-		associacaoGateway.inserir(
+		ResultSet rs = associacaoGateway.buscar();
+		AssociacaoMT associacaoMT = new AssociacaoMT(rs);
+		
+		rs = associacaoMT.inserir(
 				"54732", 
 				"2018-08-01", 
 				"Primeiro teste",
 				"PT",
 				"Rua teste, 1",
 				"5362522",
-				"3758362",
-				"123456"
+				"3758362"
 		);
 		
-		IDataSet dadosSetBanco = getConnection().createDataSet();
-		ITable tabelaAssociacao = dadosSetBanco.getTable("Associacao");
-		ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(tabelaAssociacao, new String[]{"MATRICULAASSOCIACAO"});
-		
+		associacaoGateway.inserir(rs);
+				
 		IDataSet expectedDataSet = new FlatXmlDataSetBuilder().build(new File("bdtestes/filiarAssociacao.xml"));
         ITable expectedTable = expectedDataSet.getTable("associacao");
         
-        Assertion.assertEquals(expectedTable, filteredTable);     
-		
+        Assertion.assertEqualsByQuery(expectedTable, getConnection(), "associacao",
+        		"SELECT * FROM COMP3.ASSOCIACAO ORDER BY MATRICULAASSOCIACAO DESC"
+        		+ " FETCH FIRST 1 ROWS ONLY", new String[]{"MATRICULAASSOCIACAO", "SENHA"});
+        		
 	}
 
 	public static void main(String[] args) {
