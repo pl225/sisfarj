@@ -95,7 +95,7 @@ public class CompeticaoMT {
 		
 	}
 	
-	private void validarLancamentoInformacoes(String dataCompeticao, String localCompeticao) throws CampoObrigatorioException {
+	public void validarLancamentoInformacoes(String dataCompeticao, String localCompeticao) throws CampoObrigatorioException {
 		String msg = "Preencha todos os campos!";
 		
 		if (dataCompeticao == null ||  dataCompeticao.isEmpty()) throw new CampoObrigatorioException(msg);
@@ -138,7 +138,7 @@ public class CompeticaoMT {
 		}
 	}
 	
-	private void validarPasso3(String nome, String dataCompeticao) throws CampoObrigatorioException {
+	public void validarPasso3(String nome, String dataCompeticao) throws CampoObrigatorioException {
 		String msg = "Preencha todos os campos.";
 		try {
 			new SimpleDateFormat(Constantes.FORMATO_DATA).parse(dataCompeticao);
@@ -150,7 +150,7 @@ public class CompeticaoMT {
 		
 	}
 	
-	private void validarPasso5(String endereco, String tipoPiscina, String [] nomesProva,
+	public void validarPasso5(String endereco, String tipoPiscina, String [] nomesProva,
 			String [] categorias, String [] classes)  throws CampoObrigatorioException {
 		
 		String msg = "Preencha todos os campos.";

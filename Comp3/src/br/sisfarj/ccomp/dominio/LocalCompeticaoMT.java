@@ -64,6 +64,7 @@ public class LocalCompeticaoMT {
 		validarLancamentoInformacoes(nome, endereco, p25, p50);
 		
 		this.rs.moveToInsertRow();
+		
 		this.rs.updateString("NOME", nome);
 		this.rs.updateString("ENDERECO", endereco);
 		this.rs.updateString("PISCINA25", String.valueOf(p25));
@@ -73,16 +74,16 @@ public class LocalCompeticaoMT {
 		
 	}
 
-	private void validarLancamentoInformacoes(String nome, String endereco, char piscina25, char piscina50) throws InformacoesInvalidasException, CampoObrigatorioException {
+	public void validarLancamentoInformacoes(String nome, String endereco, char piscina25, char piscina50) throws InformacoesInvalidasException, CampoObrigatorioException {
 		
 		if (nome == null || nome.isEmpty()) throw new CampoObrigatorioException("Preencha todos os campos!");
 		if (endereco == null || endereco.isEmpty()) throw new CampoObrigatorioException("Preencha todos os campos!");
 		if (piscina25 == 'F' && piscina50 == 'F') 
 			throw new InformacoesInvalidasException("Um local de competição deve possuir "
-					+ "ao menos um tipo de piscina");
+													 + "ao menos um tipo de piscina");
 	}
 	
-	private void validarLancamentoInformacoesAtualizacao(String nome, String endereco, char piscina25, char piscina50) throws InformacoesInvalidasException, CampoObrigatorioException {
+	public void validarLancamentoInformacoesAtualizacao(String nome, String endereco, char piscina25, char piscina50) throws InformacoesInvalidasException, CampoObrigatorioException {
 		
 		if (nome == null || nome.isEmpty()) throw new CampoObrigatorioException("Preencha todos os campos!");
 		if (endereco == null || endereco.isEmpty()) throw new CampoObrigatorioException("Preencha todos os campos!");
