@@ -99,5 +99,28 @@ public class AtletaProvaGateway {
 		
 		
 	}
+	
+	public ResultSet buscarAtletaProva(String numero, String nome, String endereco, String classe,
+			String categoria, String dataCompeticao, String tipoPiscina) throws SQLException, ParseException {
+		
+		BDConnection bdConnection = new BDConnection(false);
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
+		
+		Timestamp t1 = new Timestamp(simpleDateFormat.parse(dataCompeticao).getTime());
+				
+		ResultSet rs = bdConnection.execute(
+				new ConsultingQuery("SELECT * FROM comp3.atletaprova ap "
+						+ "WHERE ap.nomeProva = '" + nome + "' AND ap.classe = '" + classe + "'AND ap.categoria = '" + categoria
+						+ "'AND ap.dataCompeticao = '" + t1 + "'AND ap.endereco = '" + endereco + "'AND ap.matriculaAtleta = "
+						+ numero));
+		return rs;
+	}
+
+		public void inserir(ResultSet rs) throws SQLException {
+		rs.insertRow();
+		rs.close();
+	}
+
 
 }

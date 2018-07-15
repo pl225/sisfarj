@@ -127,5 +127,17 @@ public class AtletaGateway {
 		return rs;
 	}
 	
+	public ResultSet buscarMatricula(String matriculaAtleta) throws SQLException {
+		
+		BDConnection bdConnection = new BDConnection(false);
+		
+		ResultSet rs = bdConnection.execute(
+				new ConsultingQuery("SELECT * FROM comp3.atleta WHERE matriculaAtleta = " + matriculaAtleta)
+		);
+		
+		return rs;
+		
+	}
+	
 	
 }
