@@ -9,7 +9,6 @@ import org.junit.runner.notification.Failure;
 
 import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.dominio.AtletaMT;
-import br.sisfarj.ccomp.dominio.CompeticaoMT;
 
 public class TesteAtletaMT {
 	
