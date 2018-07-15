@@ -42,8 +42,6 @@ public class ListarPontuacaoFinal extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			
-			int matricula = VerificarIdentificacaoUsuario.verificarAutenticacao(request);
 			CompeticaoGateway competicaoGateway = new CompeticaoGateway();
 			ResultSet rs;
 			
@@ -65,9 +63,6 @@ public class ListarPontuacaoFinal extends HttpServlet {
 				request.getRequestDispatcher("pontuacaoFinal/ListarCompeticoes.jsp").forward(request, response);
 			}
 			
-		} catch (UsuarioNaoIdentificadoException e) {
-			request.setAttribute(Constantes.ERRO, "Usuário não identificado!");
-			request.getRequestDispatcher("Menu").forward(request, response);
 		} catch (SQLException | ParseException e) {
 			e.printStackTrace(response.getWriter());
 			//response.getWriter().println(e.getMessage());
