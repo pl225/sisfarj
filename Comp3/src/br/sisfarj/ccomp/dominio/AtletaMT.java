@@ -120,10 +120,15 @@ public class AtletaMT {
 	}
 	
 	public ResultSet transferir(String matriculaAtleta, String matriculaAssociacao, String numeroPagamento, String entrada,
-			String numero, String oficio) throws SQLException, ParseException, CampoObrigatorioException, AtletaNaoEncontradoException {
+			String numero, String oficio) throws SQLException, ParseException, CampoObrigatorioException, AtletaNaoEncontradoException, NumberFormatException, AssociacaoNaoEncontradaException {
 
 		validarLancamentoInformacoesTransferencia(matriculaAssociacao, numeroPagamento, entrada,
 				numero, oficio);
+		
+		AssociacaoGateway associacaoGateway = new AssociacaoGateway();
+		ResultSet rs = associacaoGateway.buscar(matriculaAssociacao);
+		AssociacaoMT associacaoMT = new AssociacaoMT(rs);
+		associacaoMT.getAssociacao(Integer.parseInt(matriculaAssociacao));
 		
 		getMatricula(Integer.parseInt(matriculaAtleta));		
 		
