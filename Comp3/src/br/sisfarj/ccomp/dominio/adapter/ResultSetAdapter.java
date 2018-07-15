@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public abstract class ResultSetAdapter {
 	
-	private ResultSet rs;
+	protected ResultSet rs;
 	private ArrayList<String> colunasPermitidas;
 
 	public ResultSetAdapter (ResultSet rs) {
