@@ -8,10 +8,11 @@
 <link rel="stylesheet" type="text/css" href="css/tabela.css">
 </head>
 <body>
-	<%@ page import = "java.sql.ResultSet" %>
+
+	<%@ page import = "br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter" %>
 
 	<%
-		ResultSet rs = (ResultSet) request.getAttribute("dados");
+		ResultSetAdapter rs = (ResultSetAdapter) request.getAttribute("dados");				
 	%>
 
 	<h2>Atletas da Prova</h2>
