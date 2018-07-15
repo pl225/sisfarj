@@ -121,7 +121,7 @@ public class InserirAtletaCompeticao extends HttpServlet {
 				
 				AtletaGateway atletaGateway = new AtletaGateway();
 				
-				if(request.getParameter("numero") != null) {
+				if(request.getParameter("numero") != null && !request.getParameter("numero").isEmpty()) {
 					
 					HttpSession httpSession = request.getSession();
 					ResultSet rs = atletaGateway.buscarMatricula(request.getParameter("numero"));
@@ -147,19 +147,16 @@ public class InserirAtletaCompeticao extends HttpServlet {
 					request.getRequestDispatcher("competicao/InserirAtletaCompeticao.jsp").forward(request, response);
 				}
 				else {
-					try {
-						throw new CampoObrigatorioException("Preencha os Campos em Branco!");
-					} catch (CampoObrigatorioException e) {
-						request.setAttribute(Constantes.ERRO, e.getMessage());
-						request.getRequestDispatcher("competicao/InserirAtletaCompeticao.jsp").forward(request, response);
-					}
+					request.setAttribute(Constantes.ERRO, "Preencha os Campos em Branco!");
+					request.getRequestDispatcher("competicao/InserirAtletaCompeticao.jsp").forward(request, response);
 				}
 			}
 			else if (request.getParameter("botao").equals("Finalizar")) {
 				request.getRequestDispatcher("Menu").forward(request, response);
 			}
 		} catch (SQLException | ParseException | NumberFormatException e) {
-			response.getWriter().println(e.getMessage()); 
+			e.printStackTrace(response.getWriter());
+			//response.getWriter().println(e.getMessage()); 
 		} catch (AtletaJaInscritoProvaException | AtletaNaoEncontradoException e) {
 			request.setAttribute(Constantes.ERRO, e.getMessage());
 			request.getRequestDispatcher("competicao/InserirAtletaCompeticao.jsp").forward(request, response);
