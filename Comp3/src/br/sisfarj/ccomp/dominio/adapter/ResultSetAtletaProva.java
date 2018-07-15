@@ -1,6 +1,7 @@
 package br.sisfarj.ccomp.dominio.adapter;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ResultSetAtletaProva extends ResultSetAdapter{
@@ -21,4 +22,5 @@ public class ResultSetAtletaProva extends ResultSetAdapter{
 		
 		return colunas;
 	}
+
 }

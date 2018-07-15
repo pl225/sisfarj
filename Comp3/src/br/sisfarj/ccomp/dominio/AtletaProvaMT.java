@@ -10,6 +10,7 @@ import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetAtleta;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetAtletaProva;
+import br.sisfarj.ccomp.dominio.adapter.ResultSetBalizamento;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetProva;
 import br.sisfarj.ccomp.dominio.exceptions.AtletaJaInscritoProvaException;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAtletaException;
@@ -28,6 +29,12 @@ public class AtletaProvaMT {
 		if (!this.rs.next()) throw new NaoHaAtletaException();
 		this.rs.beforeFirst();
 		return new ResultSetAtletaProva(this.rs);
+	}
+	
+	public ResultSetAdapter listarBalizamento() throws NaoHaAtletaException, SQLException {
+		if (!this.rs.next()) throw new NaoHaAtletaException();
+		this.rs.beforeFirst();
+		return new ResultSetBalizamento(this.rs);
 	}
 
 	public ResultSetAdapter listarPontuacaoFinal() throws SQLException, NaoHaPontuacaoException {

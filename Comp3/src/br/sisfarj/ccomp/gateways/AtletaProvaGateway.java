@@ -95,9 +95,33 @@ public class AtletaProvaGateway {
 		if (!rs.next()) throw new ProvaSemAtletaException("Sem atletas inscritos na prova!");
 		rs.beforeFirst();
 		return rs;
+	}
+	
+	public ResultSet buscarAtletasProvaTempo(String nome, String classe, String categoria, String dataCompeticao, String endereco) throws SQLException, ParseException, ProvaSemAtletaException {
 		
+		BDConnection bdConnection = new BDConnection(false);
 		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
 		
+		Timestamp t1 = new Timestamp(simpleDateFormat.parse(dataCompeticao).getTime());
+		
+		ResultSet rs = bdConnection.execute(
+				new ConsultingQuery("SELECT pontuacao, " + 
+						"sigla, " + 
+						"ass.matriculaAssociacao, " +
+						"a.nome, "+
+						"a.matriculaAtleta, " +
+						"tempo " +
+						"FROM comp3.atletaprova ap " + 
+						"INNER JOIN comp3.atleta a ON a.matriculaAtleta = ap.matriculaAtleta " + 
+						"INNER JOIN comp3.associacao ass ON ass.matriculaAssociacao = a.matriculaAssociacao " + 
+						"WHERE " + "ap.nomeProva = '" + nome + "' AND ap.classe = '" + classe +  "' AND ap.categoria = '" + categoria +
+						"' AND ap.dataCompeticao = '" + t1 + "' AND ap.endereco = '" + endereco + "' " + 
+						"ORDER BY tempo ASC"));
+		
+		if (!rs.next()) throw new ProvaSemAtletaException("Sem atletas inscritos na prova!");
+		rs.beforeFirst();
+		return rs;
 	}
 	
 	public ResultSet buscarAtletaProva(String numero, String nome, String endereco, String classe,

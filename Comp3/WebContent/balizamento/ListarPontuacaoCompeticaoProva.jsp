@@ -8,22 +8,24 @@
 <link rel="stylesheet" type="text/css" href="css/tabela.css">
 </head>
 <body>
-	<%@ page import = "java.sql.ResultSet" %>
+	<%@ page import = "br.sisfarj.ccomp.dominio.adapter.ResultSetBalizamento" %>
 
 	<%
-		ResultSet rs = (ResultSet) request.getAttribute("dados");
+		ResultSetBalizamento rs = (ResultSetBalizamento) request.getAttribute("dados");
 	%>
 
 	<h2>Atletas da Prova</h2>
-
+	<%
+			while (rs.balizamento()) {
+	%>
+	<p>Serie <%= rs.getSerie() %> </p>
 	<table>
 		<thead>
 			<tr>
 				<th>Matrícula</th>
 				<th>Nome</th>
 				<th>Sigla Associação</th>
-				<th>Tempo</th>				
-				<th>Pontos</th>				
+				<th>Tempo</th>							
 			</tr>
 		</thead>
 		<tbody>
@@ -37,7 +39,6 @@
 				<td><%= rs.getString("nome") %></td>
 				<td><%= rs.getString("sigla") %></td>
 				<td><%= rs.getString("tempo") %></td>
-				<td><%= rs.getString("pontuacao") %></td>
 			</tr>
 			
 			
@@ -47,6 +48,9 @@
 		
 		</tbody>
 	</table>
+		<%
+			}
+		%>
 	
 </body>
 </html>
