@@ -51,7 +51,7 @@ public class AssociacaoMT {
 		throw new AssociacaoNaoEncontradaException(String.valueOf(matricula));
 	}
 	
-	private String gerarSenha() {
+	public String gerarSenha() {
 		final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 		SecureRandom rnd = new SecureRandom();
 
@@ -82,7 +82,7 @@ public class AssociacaoMT {
 		return rs;
 	}
 	
-	private void validarLancamentoInformacoesInsercao(String numeroOficio, String dataOficio, String nome, 
+	public void validarLancamentoInformacoesInsercao(String numeroOficio, String dataOficio, String nome, 
 			String sigla, String endereco, String telefone, 
 			String numeroPagamento) throws CampoObrigatorioException {
 		
