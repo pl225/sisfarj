@@ -146,5 +146,43 @@ public class AtletaProvaGateway {
 		rs.close();
 	}
 
-
+	public ResultSet buscarAtletasProvaSemTempo(String nome, String classe, String categoria, String dataCompeticao, String endereco) throws SQLException, ParseException {
+		
+		BDConnection bdConnection = new BDConnection(false);
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
+		
+		Timestamp t1 = new Timestamp(simpleDateFormat.parse(dataCompeticao).getTime());
+		
+		ResultSet rs = bdConnection.execute(
+				new ConsultingQuery("SELECT a.matriculaAtleta, a.nome, ap.tempo FROM comp3.atletaprova ap "
+						+ "INNER JOIN comp3.atleta a ON ap.matriculaAtleta = a.matriculaatleta "
+						+ "WHERE ap.nomeProva = '" + nome + "' AND ap.classe = '" + classe + "'AND ap.categoria = '" + categoria
+						+ "'AND ap.dataCompeticao = '" + t1 + "'AND ap.endereco = '" + endereco + "' "
+								+ "AND ap.tempo IS NULL"));
+		
+		return rs;
+	}
+	
+	public ResultSet buscarAtletaProvaSemTempo(String numero, String nome, String endereco, String classe,
+			String categoria, String dataCompeticao, String tipoPiscina) throws SQLException, ParseException {
+		
+		BDConnection bdConnection = new BDConnection(false);
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
+		
+		Timestamp t1 = new Timestamp(simpleDateFormat.parse(dataCompeticao).getTime());
+				
+		ResultSet rs = bdConnection.execute(
+				new ConsultingQuery("SELECT * FROM comp3.atletaprova ap "
+						+ "WHERE ap.tempo IS NULL AND ap.nomeProva = '" + nome + "' AND ap.classe = '" + classe + "'AND ap.categoria = '" + categoria
+						+ "'AND ap.dataCompeticao = '" + t1 + "'AND ap.endereco = '" + endereco + "'AND ap.matriculaAtleta = "
+						+ numero));
+		return rs;
+	}
+	
+	public void atualizar (ResultSet rs) throws SQLException {
+		rs.updateRow();
+		rs.close();
+	}
 }

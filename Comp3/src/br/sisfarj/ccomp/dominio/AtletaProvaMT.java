@@ -2,17 +2,21 @@ package br.sisfarj.ccomp.dominio;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Random;
 
 import br.sisfarj.ccomp.aplicacao.Constantes;
+import br.sisfarj.ccomp.aplicacao.exceptions.CampoObrigatorioException;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetAtleta;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetAtletaProva;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetBalizamento;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetProva;
 import br.sisfarj.ccomp.dominio.exceptions.AtletaJaInscritoProvaException;
+import br.sisfarj.ccomp.dominio.exceptions.AtletasJaTemporizadosException;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAtletaException;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaPontuacaoException;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaProvaException;
@@ -23,6 +27,12 @@ public class AtletaProvaMT {
 
 	public AtletaProvaMT(ResultSet rs) {
 		this.rs = rs;
+	}
+	
+	public ResultSetAdapter mostrarAtletasSemTempo() throws SQLException, AtletasJaTemporizadosException {
+		if (!this.rs.next()) throw new AtletasJaTemporizadosException();
+		this.rs.beforeFirst();
+		return new ResultSetAtletaProva(this.rs);
 	}
 
 	public ResultSetAdapter listarTudo() throws NaoHaAtletaException, SQLException {
@@ -70,6 +80,31 @@ public class AtletaProvaMT {
 		
 		
 		return rs;
+		
+	}
+	
+	public ResultSet atualizarTempo(String tempo) throws SQLException, ParseException, AtletasJaTemporizadosException, CampoObrigatorioException {
+		
+		if (!this.rs.next()) throw new AtletasJaTemporizadosException();
+		
+		validar(tempo);
+		
+		Time t = Time.valueOf(tempo);
+		
+		this.rs.updateTime("TEMPO", t);
+		this.rs.updateInt("PONTUACAO", new Random().nextInt(10));		
+		
+		return rs;
+		
+	}
+
+	private void validar(String tempo) throws CampoObrigatorioException {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
+		try {
+			simpleDateFormat.parse(tempo);
+		} catch (ParseException e) {
+			throw new CampoObrigatorioException("Tempo em branco ou está no formato inválido.");
+		}
 		
 	}
 }

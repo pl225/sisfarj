@@ -17,6 +17,7 @@
 		<li><a href="IdentificarUsuario?pagina=CadastrarAtleta">4- Cadastrar Atleta</a></li>
 		<li><a href="IdentificarUsuario?pagina=AlterarAtleta">5- Alterar Atleta</a></li>
 		<li><a href="IdentificarUsuario?pagina=TransferirAtleta">6- Transferir Atleta</a></li>
+		<li><a href="IdentificarUsuario?pagina=InserirResultadoAtleta">7 - Inserir Resultado Atleta</a></li>
 		<li><a href="IdentificarUsuario?pagina=InserirAtletaCompeticao">8- Inserir Atleta Competição</a></li>
 		<li><a href="IdentificarUsuario?pagina=IncluirLocalCompeticao">10- Incluir Local de Competição</a></li>
 		<li><a href="IdentificarUsuario?pagina=AlterarLocalCompeticao">11- Alterar Local de Competição</a></li>
