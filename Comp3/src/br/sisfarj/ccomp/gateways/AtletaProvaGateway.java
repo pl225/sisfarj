@@ -22,11 +22,6 @@ public class AtletaProvaGateway {
 		
 		Timestamp t1 = new Timestamp(simpleDateFormat.parse(dataCompeticao).getTime());
 		
-		System.out.println("SELECT a.matriculaAtleta, a.nome, ap.tempo FROM comp3.atletaprova ap "
-						+ "INNER JOIN comp3.atleta a ON ap.matriculaAtleta = a.matriculaatleta "
-						+ "WHERE ap.nomeProva = '" + nome + "' AND ap.classe = '" + classe + "'AND ap.categoria = '" + categoria
-						+ "'AND ap.dataCompeticao = '" + t1 + "'AND ap.endereco = '" + endereco + "'");
-		
 		ResultSet rs = bdConnection.execute(
 				new ConsultingQuery("SELECT a.matriculaAtleta, a.nome, ap.tempo FROM comp3.atletaprova ap "
 						+ "INNER JOIN comp3.atleta a ON ap.matriculaAtleta = a.matriculaatleta "
