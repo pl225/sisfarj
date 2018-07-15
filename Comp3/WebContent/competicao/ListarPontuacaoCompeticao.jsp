@@ -42,7 +42,7 @@
 				<td><%= rsProvas.getString("nomeProva") %></td>
 				<td><%= rsProvas.getString("categoria") %></td>
 				<td><%= rsProvas.getString("classe") %></td>
-				<td><a href="ListarCompeticao?nome=<%= rsProvas.getString("nomeProva") %>
+				<td><a href="ListarPontuacaoCompeticao?nome=<%= rsProvas.getString("nomeProva") %>
 				&endereco=<%=rsCompeticao.getString("endereco")%>&classe=<%=rsProvas.getString("classe")%>&categoria=<%=rsProvas.getString("categoria")%>&dataCompeticao=<%=rsCompeticao.getString("dataCompeticao")%>">Selecionar</a></td>
 			</tr>
 			

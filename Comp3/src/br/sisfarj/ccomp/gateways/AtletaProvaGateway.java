@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import br.sisfarj.ccomp.aplicacao.Constantes;
 import br.sisfarj.ccomp.bd.BDConnection;
 import br.sisfarj.ccomp.bd.ConsultingQuery;
-import br.sisfarj.ccomp.gateways.exceptions.AtletaNaoEncontradoException;
 import br.sisfarj.ccomp.gateways.exceptions.ProvaSemAtletaException;
 
 public class AtletaProvaGateway {
@@ -21,11 +20,6 @@ public class AtletaProvaGateway {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
 		
 		Timestamp t1 = new Timestamp(simpleDateFormat.parse(dataCompeticao).getTime());
-		
-		System.out.println("SELECT a.matriculaAtleta, a.nome, ap.tempo FROM comp3.atletaprova ap "
-						+ "INNER JOIN comp3.atleta a ON ap.matriculaAtleta = a.matriculaatleta "
-						+ "WHERE ap.nomeProva = '" + nome + "' AND ap.classe = '" + classe + "'AND ap.categoria = '" + categoria
-						+ "'AND ap.dataCompeticao = '" + t1 + "'AND ap.endereco = '" + endereco + "'");
 		
 		ResultSet rs = bdConnection.execute(
 				new ConsultingQuery("SELECT a.matriculaAtleta, a.nome, ap.tempo FROM comp3.atletaprova ap "
@@ -73,6 +67,37 @@ public class AtletaProvaGateway {
 						"WHERE ap.dataCompeticao = '" + dataCompeticao + "' AND ap.endereco = '" + endereco + "' " + 
 						"GROUP BY ass.matriculaassociacao, ass.nome, sigla ORDER BY pontuacao DESC"));
 		return rs;
+	}
+	
+	
+	public ResultSet buscarAtletasProvaPontuacao(String nome, String classe, String categoria, String dataCompeticao, String endereco) throws SQLException, ParseException, ProvaSemAtletaException {
+		
+		BDConnection bdConnection = new BDConnection(false);
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constantes.FORMATO_DATA);
+		
+		Timestamp t1 = new Timestamp(simpleDateFormat.parse(dataCompeticao).getTime());
+		
+		ResultSet rs = bdConnection.execute(
+				new ConsultingQuery("SELECT pontuacao, " + 
+						"sigla, " + 
+						"ass.matriculaAssociacao, " +
+						"a.nome, "+
+						"a.matriculaAtleta, " +
+						"tempo " +
+						"FROM comp3.atletaprova ap " + 
+						"INNER JOIN comp3.atleta a ON a.matriculaAtleta = ap.matriculaAtleta " + 
+						"INNER JOIN comp3.associacao ass ON ass.matriculaAssociacao = a.matriculaAssociacao " + 
+						"WHERE " + "ap.nomeProva = '" + nome + "' AND ap.classe = '" + classe +  "' AND ap.categoria = '" + categoria +
+						"' AND ap.dataCompeticao = '" + t1 + "' AND ap.endereco = '" + endereco + "' " + 
+						"ORDER BY tempo DESC"));
+		
+		if (!rs.next()) throw new ProvaSemAtletaException("Sem atletas inscritos na prova!");
+		rs.beforeFirst();
+		return rs;
+		
+		
+		
 	}
 
 }

@@ -16,6 +16,7 @@ public class ResultSetProva extends ResultSetAdapter{
 		colunas.add("nomeProva");
 		colunas.add("categoria");
 		colunas.add("classe");
+		colunas.add("tipoPiscina");
 		
 		return colunas;
 	}

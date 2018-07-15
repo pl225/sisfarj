@@ -71,6 +71,7 @@ public class CompeticaoMT {
 			if (this.rs.getTimestamp("dataCompeticao").equals(timestampCompeticao) 
 					&& this.rs.getString("endereco").equals(endereco)) {
 				return new ResultSetCompeticao(this.rs);
+				
 			}
 		}
 		throw new CompeticaoNaoEncontradaException();
