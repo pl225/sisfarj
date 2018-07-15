@@ -146,7 +146,7 @@ public class AtletaMT {
 
 	}
 
-	private void validarLancamentoInformacoesTransferencia(String matriculaAssociacao, String numeroComprovante, String entrada, String numero,
+	public void validarLancamentoInformacoesTransferencia(String matriculaAssociacao, String numeroComprovante, String entrada, String numero,
 			String oficio) throws CampoObrigatorioException {
 		
 		String msg = "Preencha todos os campos!";
@@ -168,7 +168,7 @@ public class AtletaMT {
 		
 	}
 
-	private void validarLancamentoInformacoesAtualizacao(String nome, String entrada, String numero, String oficio)  throws CampoObrigatorioException {
+	public void validarLancamentoInformacoesAtualizacao(String nome, String entrada, String numero, String oficio)  throws CampoObrigatorioException {
 		
 		String msg = "Preencha todos os campos!";
 		try {
