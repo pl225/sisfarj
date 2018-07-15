@@ -7,7 +7,7 @@
 <title>SISFARJ</title>
 </head>
 <body>
-
+	
 	<%@ page import = "br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter" %>
 
 	<%
@@ -15,6 +15,8 @@
 	%>
 
 	<h2>Edite as informações da Associação <%= rs.getString("nome") %></h2>
+	
+	<jsp:include page="/WEB-INF/Erro.jsp"></jsp:include>
 	
 	<form action="AlterarAssociacao?matriculaAssociacao=<%= rs.getInt("matriculaAssociacao") %>" method="post">
 		
