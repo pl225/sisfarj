@@ -1,6 +1,7 @@
 package br.sisfarj.ccomp.test.funcional;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.junit.Test;
 
@@ -16,21 +17,16 @@ public class TesteListarAssociacao extends TesteFuncional{
 	}
 	
 	@Test
-	public void testListarAssociacaoValida () {
-		try {
-			AssociacaoGateway associacaoGateway = new AssociacaoGateway();
-			ResultSet rs = associacaoGateway.listarTodas();
-			AssociacaoMT associacaoMT = new AssociacaoMT(rs);
-			
-			ResultSetAdapter rsa;
-			rsa = associacaoMT.listarTodas();
-		} catch (NaoHaAssociacaoException e) {
-			
-			fail("Erro ao listar associações: " + e.toString());
-			
-		} catch (Throwable t){
-			  //do nothing since other exceptions are OK
-		}
+	public void testListarAssociacaoValida () throws NaoHaAssociacaoException, SQLException {
+		
+		AssociacaoGateway associacaoGateway = new AssociacaoGateway();
+		ResultSet rs = associacaoGateway.listarTodas();
+		AssociacaoMT associacaoMT = new AssociacaoMT(rs);
+		
+		ResultSetAdapter rsa;
+		rsa = associacaoMT.listarTodas();
+		assertNotNull(rsa);
+		
 		
 	}
 
