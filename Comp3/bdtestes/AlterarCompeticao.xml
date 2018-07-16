@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+	<associacao 
+		NOME = "Novo nome para teste" 
+		DATACOMPETICAO = "2018-07-13 00:00:00.0"
+		ENDERECO = "rural"
+		TIPOPISCINA = "50M" 
+	/>	
+</dataset>

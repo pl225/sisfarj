@@ -29,7 +29,7 @@ public class TesteAlterarAtleta extends TesteFuncional {
 		AtletaMT atletaMT = new AtletaMT(rs);
 		
 		rs = atletaMT.atualizar(
-				"1000000", "Novo nome para teste", "2018-11-21", "50", "1"  
+				"1000000", "Novo nome para teste", "2018-11-21", "50", "2018-11-21"  
 		);
 		
 		atletaGateway.atualizar(rs);
@@ -38,7 +38,7 @@ public class TesteAlterarAtleta extends TesteFuncional {
         ITable expectedTable = expectedDataSet.getTable("atleta");
         
         Assertion.assertEqualsByQuery(expectedTable, getConnection(), "atleta",
-        		"SELECT * FROM COMP3.COMPETICAO WHERE MATRICULATLETA = 1000000 "
+        		"SELECT * FROM COMP3.ATLETA WHERE MATRICULATLETA = 1000000 "
         		+ "ORDER BY MATRICULAATLETA DESC"
         		+ " FETCH FIRST 1 ROWS ONLY", new String[]{"MATRICULAATLETA"});     
 		

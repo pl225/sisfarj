@@ -32,7 +32,7 @@ public class TesteAlterarCompeticao extends TesteFuncional {
 		CompeticaoMT competicaoMT = new CompeticaoMT(rs);
 		
 		rs = competicaoMT.alterar(
-				"2018-07-15", "rural", "2018-07-13", "nova Iguacu"  
+				"2018-07-13", "rural", "2018-07-15", "Nova Iguacu"  
 		);
 		
 		competicaoGateway.atualizar(rs);
@@ -41,7 +41,7 @@ public class TesteAlterarCompeticao extends TesteFuncional {
         ITable expectedTable = expectedDataSet.getTable("competicao");
         
         Assertion.assertEqualsByQuery(expectedTable, getConnection(), "competicao",
-        		"SELECT * FROM COMP3.COMPETICAO WHERE DATA = AND ENDERECO =  "
+        		"SELECT * FROM COMP3.COMPETICAO WHERE DATA = 2018-07-13 AND ENDERECO = Nova Iguacu "
         		+ "ORDER BY ENDERECO DESC"
         		+ " FETCH FIRST 1 ROWS ONLY", new String[]{"ENDERECO" , "DATA"});     
 		

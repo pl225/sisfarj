@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+	<associacao 
+		MATRICULAATLETA = "1000000"
+		NOME = "Novo nome para teste" 
+		DATAENTRADA = "2018-11-21 00:00:00.0"
+		NUMEROOFICIO = "50"
+		DATAOFICIO = "2018-11-21 00:00:00.0" 
+	/>	
+</dataset>
+
