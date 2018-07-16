@@ -14,35 +14,38 @@ import br.sisfarj.ccomp.aplicacao.ConstantesPiscina;
 import br.sisfarj.ccomp.dominio.AssociacaoMT;
 import br.sisfarj.ccomp.dominio.AtletaMT;
 import br.sisfarj.ccomp.dominio.CompeticaoMT;
+import br.sisfarj.ccomp.dominio.LocalCompeticaoMT;
 import br.sisfarj.ccomp.dominio.adapter.ResultSetAdapter;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaAssociacaoException;
 import br.sisfarj.ccomp.dominio.exceptions.NaoHaCompeticaoException;
 import br.sisfarj.ccomp.gateways.AssociacaoGateway;
 import br.sisfarj.ccomp.gateways.AtletaGateway;
 import br.sisfarj.ccomp.gateways.CompeticaoGateway;
+import br.sisfarj.ccomp.gateways.LocalCompeticaoGateway;
+import br.sisfarj.ccomp.gateways.exceptions.LocalNaoEncontradoException;
 
-public class TesteListarCompeticao extends TesteFuncional{
+public class TesteListarLocaisCompeticao extends TesteFuncional{
 	
-	public TesteListarCompeticao(String metodo) {
+	public TesteListarLocaisCompeticao(String metodo) {
 		super(metodo);
 	}
-	
+
 	@Test
-	public void testListarCompeticaoValida () throws SQLException, NaoHaCompeticaoException {
-		
-			CompeticaoGateway competicaoGateway = new CompeticaoGateway();
-			ResultSet rs = competicaoGateway.listarTodas();
-			CompeticaoMT competicaoMT = new CompeticaoMT(rs);
+	public void testListarCompeticaoValida () throws SQLException, LocalNaoEncontradoException {
+
+			LocalCompeticaoGateway localCompeticaoGateway = new LocalCompeticaoGateway();
+			ResultSet rs = localCompeticaoGateway.listarTudo();
+			LocalCompeticaoMT localCompeticaoMT = new LocalCompeticaoMT(rs);
 			
 			ResultSetAdapter rsa;
-			rsa = competicaoMT.listarTodas();
+			rsa = localCompeticaoMT.listarTudo();
 			assertNotNull(rsa);
 		
 	}
 	
 	public static void main(String[] args) {
 		try {
-			new TesteListarCompeticao("listarCompeticao").runTest();
+			new TesteListarLocaisCompeticao("listarLocalCompeticao").runTest();
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
