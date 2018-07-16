@@ -1,6 +1,7 @@
 package br.sisfarj.ccomp.test.funcional;
 
 import java.io.File;
+import java.sql.ResultSet;
 
 import org.dbunit.Assertion;
 import org.dbunit.dataset.IDataSet;
@@ -9,6 +10,8 @@ import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.Test;
 
+import br.sisfarj.ccomp.dominio.AtletaMT;
+import br.sisfarj.ccomp.dominio.CompeticaoMT;
 import br.sisfarj.ccomp.gateways.AtletaGateway;
 import br.sisfarj.ccomp.gateways.CompeticaoGateway;
 
@@ -19,29 +22,23 @@ public class TesteCriarCompeticao extends TesteFuncional{
 	}
 	
 	@Test
-	public void testIncluirLocalCompeticao () throws Exception {
+	public void testCadastrarAtleta () throws Exception {
 		
 		CompeticaoGateway competicaoGateway = new CompeticaoGateway();
+		ResultSet rs = competicaoGateway.buscar("2017-05-01 00:00:00.0", "Barra");
+		CompeticaoMT competicaoMT = new CompeticaoMT(rs);
 		
-		AtletaGateway atletaGateway = new AtletaGateway();
-		atletaGateway.inserir(
-			"47563",
-			"2017-05-01 09:35:00.0",
-			"Victor Diniz",
-			"1996-08-24 10:00:05.0",
-			"2009-09-09 14:25:00.0",
-			"1000000",
-			"435241"
-		);
+		competicaoMT.inserir("Campeonato de Verao", "2017-05-01 00:00:00.0", "Barra", "25M", new String[] {"L50"}, new String[] {"MIRIM"}, new String[] {"MASCULINO"});
 		
 		IDataSet dadosSetBanco = getConnection().createDataSet();
-		ITable tabelaAtleta = dadosSetBanco.getTable("Atleta");
-		ITable filteredTable = DefaultColumnFilter.excludedColumnsTable(tabelaAtleta, new String[]{"MATRICULAASSOCIACAO"});
-		
-		IDataSet expectedDataSet = new FlatXmlDataSetBuilder().build(new File("bdtestes/cadastrarAtleta.xml"));
-        ITable expectedTable = expectedDataSet.getTable("atleta");
+		ITable tabelaCompeticao = dadosSetBanco.getTable("competicao");
+				
+		IDataSet expectedDataSet = new FlatXmlDataSetBuilder().build(new File("bdtestes/criarCompeticao.xml"));
+        ITable expectedTable = expectedDataSet.getTable("competicao");
                 
-        Assertion.assertEquals(expectedTable, filteredTable);
+        Assertion.assertEqualsByQuery(expectedTable, getConnection(), "competicao",
+        		"SELECT * FROM COMP3.COMPETICAO ORDER BY DATACOMPETICAO DESC"
+        		+ " FETCH FIRST 1 ROWS ONLY", new String[]{""});
 		
 	}
 	

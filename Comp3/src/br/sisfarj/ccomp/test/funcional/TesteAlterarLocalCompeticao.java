@@ -33,9 +33,9 @@ public class TesteAlterarLocalCompeticao extends TesteFuncional{
 		localCompeticaoGateway.atualizar(rs);
 		
 		IDataSet expectedDataSet = new FlatXmlDataSetBuilder().build(new File("bdtestes/alterarLocalCompeticao.xml"));
-        ITable expectedTable = expectedDataSet.getTable("associacao");
+        ITable expectedTable = expectedDataSet.getTable("localCompeticao");
     
-        Assertion.assertEqualsByQuery(expectedTable, getConnection(), "associacao",
+        Assertion.assertEqualsByQuery(expectedTable, getConnection(), "localCompeticao",
         		"SELECT * FROM COMP3.LOCALCOMPETICAO WHERE ENDERECO = 'Barra'", new String[]{""});
         		//+ "ORDER BY ENDERECO DESC"
         		//+ " FETCH FIRST 1 ROWS ONLY", new String[]{""});

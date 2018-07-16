@@ -38,7 +38,7 @@ public class TesteAlterarAtleta extends TesteFuncional {
         ITable expectedTable = expectedDataSet.getTable("atleta");
         
         Assertion.assertEqualsByQuery(expectedTable, getConnection(), "atleta",
-        		"SELECT * FROM COMP3.ATLETA WHERE MATRICULATLETA = 1000000 "
+        		"SELECT * FROM COMP3.COMPETICAO WHERE MATRICULATLETA = 1000000 "
         		+ "ORDER BY MATRICULAATLETA DESC"
         		+ " FETCH FIRST 1 ROWS ONLY", new String[]{"MATRICULAATLETA"});     
 		
