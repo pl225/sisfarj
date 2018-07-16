@@ -16,7 +16,7 @@ public class TesteListarAssociacao extends TesteFuncional{
 	}
 	
 	@Test
-	public void testFiliarAssociacaoValida () {
+	public void testListarAssociacaoValida () {
 		try {
 			AssociacaoGateway associacaoGateway = new AssociacaoGateway();
 			ResultSet rs = associacaoGateway.listarTodas();
