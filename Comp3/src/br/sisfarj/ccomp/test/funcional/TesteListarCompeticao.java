@@ -45,4 +45,12 @@ public class TesteListarCompeticao extends TesteFuncional{
 		
 	}
 	
+	public static void main(String[] args) {
+		try {
+			new TesteListarCompeticao("listarCompeticao").runTest();
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
